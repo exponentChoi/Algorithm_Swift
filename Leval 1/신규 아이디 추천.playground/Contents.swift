@@ -68,7 +68,6 @@ func solution(_ new_id:String) -> String {
 //    }
     
     print("보자: \(id)")
-//    print("보자: \("-_.".utf16)")
     for i in "-_.".utf8 {
 //        print("보자: \(i)")
     }
