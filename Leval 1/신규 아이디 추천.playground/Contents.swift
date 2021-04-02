@@ -59,25 +59,73 @@
 import Foundation
 
 func solution(_ new_id:String) -> String {
-    var id = new_id.lowercased() // 소문자로 치환
+    let id = new_id.lowercased() // 소문자로 치환
         .utf16
-        .filter { $0 == 45 || $0 == 95 || $0 == 46 || $0 < 40 }
+        .compactMap { Int($0) } // Int로 변경
+        .filter { $0 == 45 || $0 == 95 || $0 == 46 || ($0 >= 48 && $0 <= 57) || ($0 >= 97 && $0 <= 122) } // 필터링 할 Unicode값
+//        .compactMap { UnicodeScalar($0) }
+//        .map { "\($0)" }.joined()
     
-//    for i in id {
-//        print(i.utf16)
-//    }
+    var renewId = id.compactMap { UnicodeScalar($0)?.description }.joined() // unicode를 String으로 변환
+    renewId = renewId.removeDuplicated // 중복된 (.) 제거
     
-    print("보자: \(id)")
-    for i in "-_.".utf8 {
-//        print("보자: \(i)")
+    // 첫 index가 (.)인 경우 제거
+    if renewId.first(where: { $0 == "."}) != nil {
+        renewId.removeFirst()
     }
-    return ""
+    
+    // 끝 index가 (.)인 경우 제거
+    if renewId.last(where: { $0 == "."}) != nil {
+        renewId.removeLast()
+    }
+    
+    // 빈 문자열일 경우 "a" 대입
+    if renewId.isEmpty { renewId = "a" }
+    
+    // 최대 길이는 15자
+    renewId = renewId.subString(15)
+    
+    // 끝 index가 (.)인 경우 제거
+    if renewId.last(where: { $0 == "."}) != nil {
+        renewId.removeLast()
+    }
+    
+    // 2자리 이하인 경우 new_id의 마지막 글자를 3자리 될때까지 입력
+    if renewId.count <= 2 {
+        while renewId.count <= 3 {
+            if let last = renewId.last {
+                renewId += String(last)
+            }
+        }
+    }
+    
+    return renewId
 }
 
 extension String {
-    func toReplace(_ of: String) -> String {
-        return self.replacingOccurrences(of: of, with: "")
+    var removeDuplicated: String {
+        return self.contains("..") ? self.toReplace("..", with: ".").removeDuplicated : self
+    }
+    
+    func subString(_ offsetBy: Int) -> String {
+        guard offsetBy > 0 else { return self }
+        let endIdx: String.Index = self.index(self.startIndex, offsetBy: offsetBy - 1)
+        return String(self[...endIdx])
+    }
+    
+    func toReplace(_ of: String, with: String = "") -> String {
+        return self.replacingOccurrences(of: of, with: with)
     }
 }
 
-print(solution("...!@BaT#*..y.abcdefghijklm"))
+//print(solution("...!@BaT#*..y.abcdefghijklm"))
+//print(solution("z-+.^."))
+//print(solution("=.="))
+//print(solution("123_.def"))
+print(solution("abcdefghijklmn.p"))
+
+
+//"z-+.^."    "z--"
+//예3    "=.="    "aaa"
+//예4    "123_.def"    "123_.def"
+//예5    "abcdefghijklmn.p"    "abcdef
