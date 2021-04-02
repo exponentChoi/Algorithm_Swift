@@ -118,11 +118,12 @@ extension String {
     }
 }
 
+// 커밋 테스트 주석
 //print(solution("...!@BaT#*..y.abcdefghijklm"))
 //print(solution("z-+.^."))
 //print(solution("=.="))
 //print(solution("123_.def"))
-print(solution("abcdefghijklmn.p"))
+//print(solution("abcdefghijklmn.p"))
 
 
 //"z-+.^."    "z--"
