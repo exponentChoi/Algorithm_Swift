@@ -1,5 +1,5 @@
 /**
- 난이도: Level 1
+ 난이도: Level 1 (2021 KAKAO BLIND RECRUITMENT)
  
  문제 설명
  카카오에 입사한 신입 개발자 네오는 "카카오계정개발팀"에 배치되어, 카카오 서비스에 가입하는 유저들의 아이디를 생성하는 업무를 담당하게 되었습니다. "네오"에게 주어진 첫 업무는 새로 가입하는 유저들이 카카오 아이디 규칙에 맞지 않는 아이디를 입력했을 때, 입력된 아이디와 유사하면서 규칙에 맞는 아이디를 추천해주는 프로그램을 개발하는 것입니다.
@@ -59,46 +59,46 @@
 import Foundation
 
 func solution(_ new_id:String) -> String {
-    let id = new_id.lowercased() // 소문자로 치환
+    let id = new_id.lowercased() // 소문자로 치환 (1단계)
         .utf16
         .compactMap { Int($0) } // Int로 변경
-        .filter { $0 == 45 || $0 == 95 || $0 == 46 || ($0 >= 48 && $0 <= 57) || ($0 >= 97 && $0 <= 122) } // 필터링 할 Unicode값
+        .filter { $0 == 45 || $0 == 95 || $0 == 46 || ($0 >= 48 && $0 <= 57) || ($0 >= 97 && $0 <= 122) } // 필터링 할 Unicode값 (2단계)
 //        .compactMap { UnicodeScalar($0) }
 //        .map { "\($0)" }.joined()
     
     var renewId = id.compactMap { UnicodeScalar($0)?.description }.joined() // unicode를 String으로 변환
-    renewId = renewId.removeDuplicated // 중복된 (.) 제거
+    renewId = renewId.removeDuplicated // 중복된 (.) 제거 (3단계)
     
-    // 첫 index가 (.)인 경우 제거
-    if renewId.first(where: { $0 == "."}) != nil {
+    // 첫 index가 (.)인 경우 제거 (4단계)
+    if let first = renewId.first, first == "." {
         renewId.removeFirst()
     }
-    
-    // 끝 index가 (.)인 경우 제거
-    if renewId.last(where: { $0 == "."}) != nil {
+
+    // 끝 index가 (.)인 경우 제거 (4단계)
+    if let last = renewId.last, last == "." {
         renewId.removeLast()
     }
-    
-    // 빈 문자열일 경우 "a" 대입
+
+    // 빈 문자열일 경우 "a" 대입 (5단계)
     if renewId.isEmpty { renewId = "a" }
     
-    // 최대 길이는 15자
+    // 최대 길이는 15자 (6단계)
     renewId = renewId.subString(15)
-    
-    // 끝 index가 (.)인 경우 제거
-    if renewId.last(where: { $0 == "."}) != nil {
+
+    // 끝 index가 (.)인 경우 제거 (6단계)
+    if let last = renewId.last, last == "." {
         renewId.removeLast()
     }
-    
-    // 2자리 이하인 경우 new_id의 마지막 글자를 3자리 될때까지 입력
+
+    // 2자리 이하인 경우 new_id의 마지막 글자를 3자리 될때까지 입력 (7단계)
     if renewId.count <= 2 {
-        while renewId.count <= 3 {
+        while renewId.count < 3 {
             if let last = renewId.last {
                 renewId += String(last)
             }
         }
     }
-    
+
     return renewId
 }
 
@@ -108,7 +108,7 @@ extension String {
     }
     
     func subString(_ offsetBy: Int) -> String {
-        guard offsetBy > 0 else { return self }
+        guard offsetBy > 0, self.count >= offsetBy else { return self }
         let endIdx: String.Index = self.index(self.startIndex, offsetBy: offsetBy - 1)
         return String(self[...endIdx])
     }
@@ -118,11 +118,12 @@ extension String {
     }
 }
 
-// 커밋 테스트 주석
-//print(solution("...!@BaT#*..y.abcdefghijklm"))
-//print(solution("z-+.^."))
-//print(solution("=.="))
-//print(solution("123_.def"))
+
+print(solution("...!@BaT#*..y.abcdefghijklm"))
+print(solution("z-+.^."))
+print(solution("=.="))
+print(solution("123_.def"))
+print(solution("abcdefghijklmn.p"))
 
 //"z-+.^."    "z--"
 //예3    "=.="    "aaa"
