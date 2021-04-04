@@ -70,12 +70,12 @@ func solution(_ new_id:String) -> String {
     renewId = renewId.removeDuplicated // 중복된 (.) 제거 (3단계)
     
     // 첫 index가 (.)인 경우 제거 (4단계)
-    if let first = renewId.first, first == "." {
+    if renewId.hasPrefix(".") {
         renewId.removeFirst()
     }
 
     // 끝 index가 (.)인 경우 제거 (4단계)
-    if let last = renewId.last, last == "." {
+    if renewId.hasSuffix(".") {
         renewId.removeLast()
     }
 
@@ -86,7 +86,7 @@ func solution(_ new_id:String) -> String {
     renewId = renewId.subString(15)
 
     // 끝 index가 (.)인 경우 제거 (6단계)
-    if let last = renewId.last, last == "." {
+    if renewId.hasSuffix(".") {
         renewId.removeLast()
     }
 
