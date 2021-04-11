@@ -40,10 +40,10 @@ func solution(_ numbers:[Int], _ hand:String) -> String {
     
     numbers.forEach { num in
         switch num {
-        case 1, 4, 7:
+        case 1, 4, 7: // 왼쪽 손가락 구역
             result += "L"
             leftFinger = num
-        case 3, 6, 9:
+        case 3, 6, 9: // 오른쪽 손가락 구역
             result += "R"
             rightFinger = num
         default:
