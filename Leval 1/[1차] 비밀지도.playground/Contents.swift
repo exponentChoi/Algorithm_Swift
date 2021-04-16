@@ -33,7 +33,7 @@ func solution(_ n:Int, _ arr1:[Int], _ arr2:[Int]) -> [String] {
     
     let binaries1 = arr1.compactMap { Int(String($0, radix: 2)) }.map { digit($0, n: n) } // 2진법으로 치환
     let binaries2 = arr2.compactMap { Int(String($0, radix: 2)) }.map { digit($0, n: n) } // 2진법으로 치환
-    
+
     for i in 0..<n { // n수 만큼 반복
         answer.append(combine(binaries1[i], binaries2[i]))
     }
@@ -73,7 +73,33 @@ func combine(_ arr1: String, _ arr2: String) -> String {
     return answer
 }
 
-
 print(solution(5,
+               [9, 20, 28, 18, 11],
+               [30, 1, 21, 17, 28]))
+
+
+// 101 - 5
+// 010 - 2
+// 111 - 5 OR 2
+// 100111 - (5 OR 2) OR (2를 좌측 쉬프트 4만큼)
+print(String((5|2)|2<<4, radix: 2))
+
+
+// MARK: - 다른풀이 분석
+func solution2(_ n:Int, _ arr1:[Int], _ arr2:[Int]) -> [String] {
+    /**
+     1. arr1과 arr2를 OR 비교하여 2진법으로 변환
+     2. arr1, arr2, 2를 OR 하는 이유는 자릿수가 부족한 경우를 위해서다. 예를들어 00111인 경우 111만 남기 때문에 100111을 만든다.
+     3. 위에서 뽑은 string을 "1"인지 비교하여 "#" 또는 " "으로 치환한다.
+     4. 좌측으로 쉬프트하여 총 n+1자리수가 되었으니 1번째부터 비교하여 쌓는다.
+     (ex: 5 | 2 = 00111 이다. 그럼 Int인 경우 앞자리 00은 사라지게 된다. 그래서 2(00010)를 해당 자리수만큼 좌측쉬프트 한 후 100111을 만들고, 치환할 때는 인덱스 1부터 비교한다.
+     */
+    return (0..<n).map { String( // 2를 n-1만큼 왼쪽으로 이동시키는 이유는
+        String(arr1[$0]|arr2[$0]|2<<(n - 1), radix: 2) // 2를 n-1만큼 왼쪽으로 이동시키는 이유는 첫자리가 0인경우를 대비하기 위함... 예를들어 00111인 경우 111만 남기 때문에 100111을 만든다.
+            .map { $0 == "1" ? "#" : " "}[1...n]
+    )}
+}
+
+print(solution2(5,
                [9, 20, 28, 18, 11],
                [30, 1, 21, 17, 28]))
