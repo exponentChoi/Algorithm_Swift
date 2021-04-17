@@ -16,14 +16,16 @@
 func solution(_ s:String) -> String {
     
     let isEven = s.count % 2 == 0 // true ? 짝수 : 홀수
+    let half = s.count / 2 // 가운데 숫자 index
     
-//    s.enumerated().forEach { return $0.offset == s.count % 2 == 0 ? $0.element : }
-    for char in s.enumerated() {
-        if char.offset ==
-    }
-    https://recurbate.com/play.php?video=4094074
-    return ""
+    return !isEven ? s.subString(at: half) : s.subString(at: half - 1) + s.subString(at: half)
 }
 
-print(solution("abcde"))
-print(solution("qwer"))
+extension String {
+    func subString(at index: Int) -> String {
+        return String(self[self.index(self.startIndex, offsetBy: index)])
+    }
+}
+
+print(solution("abcde")) // "c"
+print(solution("qwer"))  // "we"
