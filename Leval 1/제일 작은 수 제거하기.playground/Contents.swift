@@ -15,13 +15,15 @@
  */
 
 func solution(_ arr:[Int]) -> [Int] {
+    /* 간결하지만 많은수가 있을 경우 시간이 오래걸린다.
+     let result = arr.filter { $0 != arr.min() }
+     return result.isEmpty ? [-1] : result
+     */
+    
+    // 가장 작은수 제거하기 (단순...)
     var result = arr
-    
-    if arr.count <= 1 {
-        result.append(-1)
-    }
-    
-    return result.filter { $0 != arr.min() }
+    result.remove(at: result.firstIndex(of: result.min()!)!)
+    return result.isEmpty ? [-1] : result
 }
 
 print( solution([4,3,2,1,2,7,3,32,-30]) )
