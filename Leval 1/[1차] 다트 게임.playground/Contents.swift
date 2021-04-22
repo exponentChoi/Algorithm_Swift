@@ -42,11 +42,37 @@
  */
 
 func solution(_ dartResult:String) -> Int {
-    let test = dartResult.map { String($0) }
+    var nums: [Int] = []
+    var num = 0
+    var previous = 0
+    var answer = 0
     
+    dartResult.forEach {
+        if let i = Int($0.description) {
+            num = i
+        }
+        
+        if $0 == "S" {
+            nums.append(num * 1)
+            answer = num * 1
+        } else if $0 == "D" {
+            nums.append(num * num)
+            answer = num * num
+        } else if $0 == "T" {
+            nums.append(num * num * num)
+            answer = num * num * num
+        }
+        
+        if $0 == "#" {
+            num = -num
+        } else if $0 == "*" {
+            nums[nums.count - 1] = nums[nums.count - 1] * 2
+            nums[nums.count - 2] = nums[nums.count - 2] * 2
+        }
+    }
     
-    
-    return 0
+    return nums.reduce(0, +)
 }
 
 print(solution("1S2D*3T"))
+print(solution(" 1D2S#10S"))
