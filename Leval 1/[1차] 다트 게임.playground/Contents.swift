@@ -42,37 +42,93 @@
  */
 
 func solution(_ dartResult:String) -> Int {
-    var nums: [Int] = []
-    var num = 0
-    var previous = 0
-    var answer = 0
+    var nums: [Int] = [] // 결과값 저장소
+    var num1 = "" // 숫자를 string으로 저장한다.
+    var isRemove = false // true일 경우 num1 초기화
     
     dartResult.forEach {
-        if let i = Int($0.description) {
-            num = i
+        if Int($0.description) != nil {
+            if isRemove {
+                num1 = ""
+                isRemove = false
+            }
+            num1 += $0.description
         }
-        
+                
         if $0 == "S" {
-            nums.append(num * 1)
-            answer = num * 1
+            let n = Int(num1)!
+            nums.append(n * 1)
+            isRemove = true
         } else if $0 == "D" {
-            nums.append(num * num)
-            answer = num * num
+            let n = Int(num1)!
+            nums.append(n * n)
+            isRemove = true
         } else if $0 == "T" {
-            nums.append(num * num * num)
-            answer = num * num * num
+            let n = Int(num1)!
+            nums.append(n * n * n)
+            isRemove = true
         }
         
         if $0 == "#" {
-            num = -num
+            let n = nums.last ?? 0
+            nums.removeLast()
+            nums.append(-n)
+            isRemove = true
         } else if $0 == "*" {
-            nums[nums.count - 1] = nums[nums.count - 1] * 2
-            nums[nums.count - 2] = nums[nums.count - 2] * 2
+            if nums.count > 1 {
+                nums[nums.count - 1] = nums[nums.count - 1] * 2
+                nums[nums.count - 2] = nums[nums.count - 2] * 2
+            } else if nums.count > 0 {
+                nums[nums.count - 1] = nums[nums.count - 1] * 2
+            }
+
+            isRemove = true
         }
+        
+        print("nums: \(nums)")
     }
-    
+
     return nums.reduce(0, +)
 }
 
 print(solution("1S2D*3T"))
-print(solution(" 1D2S#10S"))
+print(solution("1D2S#10S"))
+print(solution("1D2S0T"))
+print(solution("1S*2T*3S"))
+print(solution("1D#2S*3S"))
+print(solution("1T2D3D#"))
+
+
+// MARK: - 다른 사람의 풀이: isLetter, isNumber로 숫자와 문자 구분 그리고 zip 사용
+func solution2(_ dartResult:String) -> Int {
+
+        // isLetter로 문자 , #, 0 을 제거하고 분리한 숫자만 numberList에 넣는다
+        let numberList = dartResult.split(whereSeparator: {$0.isLetter || $0 == "#" || $0 == "*"})
+
+        // 숫자면 제거하고 letterList에 넣는다
+        let letterList = dartResult.split(whereSeparator: {$0.isNumber})
+        var totalScore = 0
+
+        for (i, (number, letter)) in zip(numberList, letterList).enumerated() {
+            var score = 0
+            if let number = Int(number) {
+                score = letter.contains("D") ? number * number : letter.contains("T") ? number * number * number : number
+            }
+
+            if letter.contains("*") {
+                score *= 2
+            } else if letter.contains("#") {
+                score = -score
+            }
+
+            if i != 2 {
+                if letterList[i + 1].contains("*") {
+                    score *= 2
+                }
+            }
+
+            totalScore += score
+        }
+
+        return totalScore
+}
