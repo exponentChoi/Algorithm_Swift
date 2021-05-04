@@ -68,7 +68,6 @@ import Foundation
 
 func solution(_ record:[String]) -> [String] {
     var answer:[String] = [] // 채팅장에 보여줄 String 저장 (ex: ...님이 들어왔습니다.)
-    let uids: Set<String> = Set(record.map { $0.components(separatedBy: " ")[1]}) // uid 관리용으로 저장
     var nicknames: [String: String] = [:] // nickname과 uid를 [key: value] 저장
     
     // ...님이 들어왔습니다. or ...님이 나갔습니다. String 치환
@@ -76,23 +75,17 @@ func solution(_ record:[String]) -> [String] {
         let id = $0.components(separatedBy: " ")[1]
         if $0.contains("Enter") {
             answer.append("\(id)님이 들어왔습니다.")
+            nicknames[id] = $0.components(separatedBy: " ")[2]
         } else if $0.contains("Leave") {
             answer.append("\(id)님이 나갔습니다.")
+        } else {
+            nicknames[id] = $0.components(separatedBy: " ")[2]
         }
     }
     
-    for i in uids {
-//        if record[i.offset].components(separatedBy: " ").count > 2 {
-//            nicknames[i.element] = record[i.offset].components(separatedBy: " ")[1]
-//        }
-        let nickname = record.filter { $0.contains(i) && !$0.contains("Leave") }.last! // Leave가 아닌것만 nickname에 담는다.
-            .components(separatedBy: " ").last!
-        nicknames[i] = nickname
-    }
-    
     return answer.map {
-        let id = $0.components(separatedBy: "님이").first! // "님이"라는 글자로 배열을 나누고 첫번째 배열에 uid가 들어간다.
-        return $0.replacingOccurrences(of: id, with: nicknames[id]!) // uid를 가지고 nicknames에서 nickname을 빼서 치환한다.
+        let id = $0.components(separatedBy: "님이").first!
+        return $0.replacingOccurrences(of: id, with: nicknames[id]!)
     }
 }
 
