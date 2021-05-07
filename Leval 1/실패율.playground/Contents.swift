@@ -55,8 +55,27 @@ func solution(_ N:Int, _ stages:[Int]) -> [Int] {
     }
     
     // 실패율을 내림차순으로 정렬 후 stage를 반환시키며 완료!!
-    return answer.sorted(by: { $0.value > $1.value }).map { $0.key }
+    return answer.sorted(by: <).sorted(by: { $0.value > $1.value }).map { $0.key }
 }
 
 print(solution(5, [2, 1, 2, 6, 2, 4, 3, 3]))
 print(solution(4, [4,4,4,4,4]))
+
+
+// MARK: - 다른사람 풀이 해석
+// filter(고차함수) 사용을 줄였지만 시간초과로 실패..
+func solution2(_ N:Int, _ stages:[Int]) -> [Int] {
+    var answer: [Int: Double] = [:]
+    var p = stages.count
+    
+    for i in 1...N {
+        let failed = stages.filter { $0 == i }.count
+        answer[i] = Double(failed) / Double(p)
+        p -= failed
+    }
+    
+    return answer.sorted(by: <).sorted(by: { $0.value > $1.value }).map { $0.key }
+}
+
+print(solution2(5, [2, 1, 2, 6, 2, 4, 3, 3]))
+print(solution2(4, [4,4,4,4,4]))
