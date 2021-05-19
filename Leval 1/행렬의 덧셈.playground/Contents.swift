@@ -28,6 +28,12 @@ func solution(_ arr1:[[Int]], _ arr2:[[Int]]) -> [[Int]] {
     }
 
     return result
+    
+    /*
+        깔끔하긴 하지만 고차함수의 연속으로 성능이 저하된다.
+        for문을 더 간결하게 정리하는것이 좋을 것 같다.
+     */
+//    return zip(arr1, arr2).map { zip($0, $1).map { $0 + $1 }}
 }
 
 print(solution([[1,2],[2,3]] , [[3,4],[5,6]]))
