@@ -76,10 +76,12 @@ func solution2(_ s:String) -> [Int] {
         $0.split(omittingEmptySubsequences: true, whereSeparator: { "{,".contains($0) }).map { Int($0)! }
     }
 
-    sets.sort { (lhs, rhs) -> Bool in
-        lhs.count < rhs.count
-    }
+//    sets.sort { (lhs, rhs) -> Bool in
+//        lhs.count < rhs.count
+//    }
 
+    sets.sort { $0.count < $1.count }
+    
     sets.forEach {
         result.append(Array(Set($0).subtracting(result)).first!)
     }
