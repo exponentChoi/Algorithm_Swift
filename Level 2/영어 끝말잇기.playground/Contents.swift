@@ -78,3 +78,25 @@ func solution(_ n:Int, _ words:[String]) -> [Int] {
 print(solution(3, ["tank", "kick", "know", "wheel", "land", "dream", "mother", "robot", "tank"]))
 print(solution(5, ["hello", "observe", "effect", "take", "either", "recognize", "encourage", "ensure", "establish", "hang", "gather", "refer", "reference", "estimate", "executive"] ))
 print(solution(2, ["hello", "one", "even", "never", "now", "world", "draw"]))
+
+
+// MARK: - Refactoring
+func solution2(_ n:Int, _ words:[String]) -> [Int] {
+    var usedWords:[String] = [words.first!] // 사용된 단어에 첫번째 단어 저장
+    
+    for i in 1..<words.count {
+        // 끝말잇기가 안되거나, 사용된 단어가 있을 경우 탈락자 정보를 즉시 반환한다.
+        if String(words[i - 1].last!) != String(words[i].first!) || usedWords.contains(words[i]) {
+            let turn = (i % n) + 1 // 현재 차례
+            let count = (i / n) + 1 // 현재 cycle
+            return [turn, count] // 탈락자 반환
+        } else {
+            usedWords.append(words[i]) // 사용된 단어에 현재 단어 추가
+        }
+    }
+    
+    return [0, 0] // for문이 모두 돌았을 경우 탈락자가 없으므로 [0, 0] 반환
+}
+print(solution2(3, ["tank", "kick", "know", "wheel", "land", "dream", "mother", "robot", "tank"]))
+print(solution2(5, ["hello", "observe", "effect", "take", "either", "recognize", "encourage", "ensure", "establish", "hang", "gather", "refer", "reference", "estimate", "executive"] ))
+print(solution2(2, ["hello", "one", "even", "never", "now", "world", "draw"]))
