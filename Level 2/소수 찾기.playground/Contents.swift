@@ -32,7 +32,7 @@ func solution(_ numbers: String) -> Int {
     let numberArr = numbers.map { String($0) } // 1. String으로 하나씩 재배열
     let combines = comb(numbers: numberArr).compactMap { Int($0) } // 2. 모든 경우의 수로 숫자 조합
     
-    return primeNumber(Set(combines)) // 3. [2]에서 조합한 숫자들 중 소수인 숫자들의 갯수를 추출
+    return Set(combines).filter { isPrime($0) }.count // 3. [2]에서 조합한 숫자들 중 소수인 숫자들의 갯수를 추출
 }
 
 /// 재귀함수 - 숫자들을 가지고 만들 수 있는 숫자들을 전부 조합한다.
@@ -57,11 +57,6 @@ func comb(numbers: [String]) -> Set<String> {
     }
     
     return answer
-}
-
-/// 소수의 갯수를 반환해주는 함수
-func primeNumber(_ numbers: Set<Int>) -> Int {
-    return numbers.filter { isPrime($0) }.count
 }
 
 /// 소수 판별기
