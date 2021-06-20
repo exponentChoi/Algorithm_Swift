@@ -23,6 +23,7 @@
  1부터 5 사이의 소수는 [2,3,5] 3개가 존재하므로 3를 반환
  */
 
+import Foundation
 
 // 시간초과 됨...
 func solution(_ n:Int) -> Int {
@@ -41,6 +42,23 @@ func isPrime(_ num: Int) -> Bool {
     
     for i in 2..<num {
         if num % i == 0 { // 에라토스테네스의 체를 활용한 for문 작성
+            return false
+        }
+    }
+    
+    return true
+}
+
+// 소수 구하기 함수2 (제곱근을 구해서 소수를 판단한다.) => 숫자가 클수록 속도가 굉장히 빠름
+func isPrime2(_ number: Int) -> Bool {
+    guard number >= 2 else { return false }
+    guard number > 3 else { return true }
+    
+    let root = sqrt(Double(number))
+    
+    
+    for i in 2...Int(root) {
+        if number % i == 0 {
             return false
         }
     }
@@ -73,3 +91,66 @@ func solution2(_ n:Int) -> Int {
 
 print(solution2(10))
 print(solution2(5))
+
+
+
+// MARK: - performance test !!
+private func bench(index: Int = 0, benchFunc: () -> ()) {
+    let startTime = CFAbsoluteTimeGetCurrent()
+    benchFunc()
+    let processTime = CFAbsoluteTimeGetCurrent() - startTime
+    print("Process Time [\(index)] = \(processTime)")
+}
+
+func performanceTest() {
+    DispatchQueue.main.async {
+        let array = Array(1...10000)
+        
+        bench(index: 1, benchFunc: {
+            let a = array.filter { isPrime($0) }.count
+            print("aaaa : \(a)")
+        })
+        
+        bench(index: 2, benchFunc: {
+            let b = array.filter { isPrime2($0) }.count
+            print("bbbb : \(b)")
+        })
+        
+        bench(index: 3, benchFunc: {
+            let aaa = array.filter { $0 % 2 == 0 }
+            print("aaaa : \(aaa.count)")
+        })
+        
+        bench(index: 4, benchFunc: {
+            var aaa:[Int] = []
+            array.forEach {
+                if $0 % 2 == 0 {
+                    aaa.append($0)
+                }
+            }
+            print("aaaa : \(aaa.count)")
+        })
+        
+        bench(index: 5, benchFunc: {
+            var aaa:[Int] = []
+            for i in 0..<array.count {
+                if array[i] % 2 == 0 {
+                    aaa.append(array[i])
+                }
+            }
+            print("aaaa : \(aaa.count)")
+        })
+        
+        
+        bench(index: 6, benchFunc: {
+            var aaa:[Int] = []
+            array.map {
+                if $0 % 2 == 0 {
+                    aaa.append($0)
+                }
+            }
+            print("aaaa : \(aaa.count)")
+        })
+    }
+}
+performanceTest()
