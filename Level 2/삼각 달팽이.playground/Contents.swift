@@ -36,12 +36,12 @@ func solution(_ n:Int) -> [Int] {
     var downCount = 0 // 한바퀴가 돌고난 후 down을 1씩 증가시킨다.
     var rightCount = 0 // up에서 사용하기 위해 한바퀴가 돌고난 후 1 증가시킨다.
     var upCount = 2 // up이 몇번 증가했는지 알기 위해 한바퀴가 돌고난 후 1 증가시킨다.
-
-    while true {
+    
+    loop: while true {
         switch step {
         case .down: // down
-            if whileCount >= pyramidArray.count - downCount {
-                break
+            if whileCount > pyramidArray.count - downCount {
+                break loop
             }
             
             for i in stride(from: whileCount, to: pyramidArray.count - downCount, by: +1) {
@@ -52,8 +52,8 @@ func solution(_ n:Int) -> [Int] {
             step = .right
             whileCount += 1
         case .right: // right
-            if whileCount >= pyramidArray.count - downCount {
-                break
+            if whileCount > pyramidArray.count - downCount {
+                break loop
             }
             
             for i in stride(from: whileCount, to: pyramidArray.count - downCount, by: +1) {
@@ -65,8 +65,8 @@ func solution(_ n:Int) -> [Int] {
             step = .up
             whileCount += 1
         case .up: // up
-            if (rightCount * 2) >= pyramidArray.count - upCount {
-                break
+            if (pyramidArray.count - upCount) < (rightCount * 2) {
+                break loop
             }
             
             for i in stride(from: pyramidArray.count - upCount, to: (rightCount * 2), by: -1) {
@@ -98,6 +98,20 @@ func solution(_ n:Int) -> [Int] {
             answer.append(i)
         }
     }
+    
+    
+    for i in 0..<answer.count {
+        if i % 2 == 0 {
+            
+        }
+    }
+    
+    answer.filter { $0 % 2 == 0}
+    answer.contains(where: {$0 % 2 == 0})
+    
+    
+    
+    
     
     return answer
 }
