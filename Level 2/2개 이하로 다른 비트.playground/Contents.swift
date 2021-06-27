@@ -33,16 +33,30 @@
 
 import Foundation
 
+/**
+ *  AND      :   &
+ *  OR        :   |
+ *  NOT      :   ~
+ *  2의보수  :   -
+ *  XOR      :  ^
+ *  shift(R)  :  >>
+ *  shift(L)  :  <<
+ *  ########################################>>
+ *
+ *  가장 최하위에 있는 0과 바로 오른쪽에 있는 1과 교체해주면 된다. ex => [(1101) -> (1110)],  [(0111) -> (1011)],  [(1011) -> (1101)]
+ *  1. 최하위 비트 구하는 공식 ( ~A) & (A+1)  => "LastBit"
+ *  2. "LastBit" OR A      =>  "a"
+ *  3. ~("LastBit" >> 1 )  =>  "b"
+ *  answer =  "a" & "b"
+ *
+ *  하나씩 증가하면서 찾는것 보다 공식을 사용하면 속도가 굉장히 빠름.
+ *  비트는 꾸준히 봐야 익숙해 질 것 같다..
+ */
 func solution(_ numbers:[Int64]) -> [Int64] {
-    
     return numbers.map {
-        if $0 % 2 == 0 {
-            return $0 + 1
-        } else {
-            let last = (~$0) & ($0+1)
-            return ($0 | last) & ~(last>>1)
-        }
+        let last = (~$0) & ($0+1)
+        return ($0 | last) & ~(last>>1)
     }
 }
 
-print(solution([2,7]))
+print(solution([2,7,25,21]))
