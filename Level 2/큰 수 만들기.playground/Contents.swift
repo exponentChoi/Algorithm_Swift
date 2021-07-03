@@ -21,7 +21,7 @@
 
 import Foundation
 
-// 시간초과 발생..
+// 시간초과 발생.. 이건 모든 경우의 수를 구하는 BFS임.
 func solution(_ number:String, _ k:Int) -> String {
     return combine(number, letter: "", target: number.count - k)
         .compactMap { Int($0) }
@@ -53,32 +53,30 @@ func combine(_ number: String, letter: String, target: Int) -> Set<String> {
 
 
 // MARK: - 다른방식으로 접근
-// 첫번째 Index부터 검사하면서 가장 큰 숫자를 저장한다.
+// ([1,2,3,4,5], 2)가 주어졌을 때 3자리수를 만들어야 한다.
+// 1. stack에 Index마다 가장 큰 숫자를 저장하고.
+// 2. 같은 Index일 때 더 큰 숫자가 있는 경우 교체한다.
 func solution2(_ number:String, _ k:Int) -> String {
-    let nums = number.map { String($0) }
-    var stack = [nums[0]]
+    let nums = number.map { String($0) } // String을 각 배열로 만든다.
+    var stack = [nums[0]] // stack, 첫번 째 항목 삽입
     var count = 0
     
     for i in 1..<nums.count {
-        if count == k {
-            stack += nums[i..<nums.count]
-            break
-        }
         
         stack.append(nums[i])
-        var last = stack.count - 1
-        
-        if stack[last - 1] < stack[last] {
+        var last = stack.count - 1 // stack의 마지막 index
+
+        if stack[last - 1] < stack[last] { // 최근 저장한 value가 바로 앞 저장한 값보다 큰 경우 (시간을 줄이기 위해 분기처리함)
             while stack.count != 1 && stack[last - 1] < stack[last] && count < k {
-                stack.swapAt(last, last - 1)
-                stack.removeLast()
+                stack.swapAt(last, last - 1) // last Index와 (last - 1) Index의 위치를 바꾼다.
+                stack.removeLast() // 바꾸고 난 후 마지막 값은 제거한다.
                 last = stack.count - 1
                 count += 1
             }
         }
     }
     
-    return stack.joined()
+    return stack.joined() // stack에 저장한 string값을 전부 합친다.
 }
 
 
