@@ -31,46 +31,52 @@
 import Foundation
 
 func solution(_ progresses:[Int], _ speeds:[Int]) -> [Int] {
-    var days:[Int] = []
-    var progress = progresses
+    var answer:[Int] = [1] // 배포한 횟수의 배열
+    let days = zip(progresses, speeds) // 각 기능별로 작업 완료된 일수를 구한다.
+        .map { ceil((100 - Double($0)) / Double($1)) } // 각 기능별 필요한 일수를 구한다. (2.3인 경우 3일이 소요된 것이므로 올림처리한다.)
     
-    // 각 기능별로 작업 완료된 일수를 구한다.
-    for i in 0..<progresses.count {
-        var day = 0
-        
-        while progress[i] < 100 {
-            progress[i] += speeds[i]
-            day += 1
-        }
-        
-        days.append(day)
-    }
-    
-    
-    var answer:[Int] = []
-    
+    var day = days.first! // 배포한 기능의 작업한 일수
+
     // 개발한 기능을 배포할 때 뒤에 개발한것 중 완료된게 있으면 같이 배포한다.
-    while days.count > 0 {
-        var count = 1 // 배포한 개수
-        let array = days // 걸린 일수
-        let first = days.first! // 첫번째 기능이 걸린 일자
-        days.removeFirst()
-        
-        for i in 0..<days.count {
-            if first >= array[i + 1] { // 첫번째 기능개발을 완료했을 때 다음기능이 개발완료된 경우
-                count += 1
-                days.removeFirst()
-            } else { // 첫번째 기능개발을 완료하고 다음기능이 개발이 안된경우
-                break
-            }
+    for i in 1..<days.count {
+        if days[i] <= day { // 앞 기능을 배포할 때 다음 기능이 완료된 경우
+            answer[answer.count - 1] += 1 // 배포한 횟수에 +1
+        } else { // 앞 기능을 배포할 때 다음 기능이 완료되지 않은 경우
+            answer.append(1) // 배포한 횟수 배열을 추가한다.
+            day = days[i] // 작업한 일수를 저장한다.
         }
-        
-        answer.append(count)
     }
     
     return answer
 }
 
-print(solution([93, 30, 55], [1, 30, 5]))
-print(solution([95, 90, 99, 99, 80, 99], [1, 1, 1, 1, 1, 1]))
+print("Solution 1")
+print(solution([93, 30, 55], [1, 30, 5])) // [2, 1]
+print(solution([95, 90, 99, 99, 80, 99], [1, 1, 1, 1, 1, 1])) // [1, 3, 2]
+print(solution([70], [20])) // 2
 
+
+// MARK: - 다른사람 문제 풀이
+func solution2(_ progresses:[Int], _ speeds:[Int]) -> [Int] {
+    return zip(progresses, speeds)
+        .map { (100 - $0) / $1 } // 각 기능별 필요한 일수를 구한다.
+        .reduce(([], 0)) { (tuple, day) -> ([Int], Int) in // (배포한 횟수를 저장한 배열, 작업한 일자), 작업한 일자
+            let (list, lastMax) = tuple
+        
+            guard let lastCount = list.last else { // 마지막에 배포한 횟수
+                return ([1], day) // 배포가 처음인 경우
+            }
+            
+            if lastMax >= day { // 마지막에 배포한 일수가 해당 일수보다 큰 경우 (마지막 배포일보다 적게 걸렸으면 같이 배포가 가능하다.)
+                return (list.dropLast() + [lastCount + 1], lastMax) // 배포한 횟수를 1 추가하고, 앞 기능의 작업한 일수를 반환한다.
+            }
+            
+            // 해당 기능을 배포할 때 뒤에 기능이 완료되지 않은 경우
+            return (list + [1], day) // 같이 배포하지 못했으므로, 배열에 1개를 추가한다. 그리고 작업한 일수를 반환한다.
+        }.0
+}
+
+print("\nSolution 2")
+print(solution2([93, 30, 55], [1, 30, 5]))
+print(solution2([95, 90, 99, 99, 80, 99], [1, 1, 1, 1, 1, 1]))
+print(solution([70], [20])) // 2
