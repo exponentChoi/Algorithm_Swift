@@ -32,7 +32,11 @@
  0    ["Jeju", "Pangyo", "Seoul", "NewYork", "LA"]    25
  */
 
-// - LRU
+// - LRU(Least Recently Used)
+// 가장 오래 사용하지 않은 페이지를 교체하는 알고리즘입니다.
+// 현재 가장 많은 운영체제가 채택한 알고리즘으로 가장 효율이 좋다고 평가받고 있습니다.
+
+// - LFU(Least Frequently Used)
 // 참조 횟수가 가장 적은 페이지를 교체하는 알고리즘이다.
 // 만약 교체 대상이 여러 페이지일 경우 가장 오래 사용하지 않은 페이지로 교체한다.
 
@@ -52,34 +56,34 @@ func solution(_ cacheSize:Int, _ cities:[String]) -> Int {
     guard cacheSize > 0 else { return cities.count * 5 } // cache가 1보다 작은경우 모든 실행시간이 5씩 걸린다.
 
     var runTime = 0 // 실행시간을 담는 변수
-    var caches:[Cache] = [] // 캐시를 담는 변수
+    var cache:[Cache] = [] // 캐시를 담는 변수
     
     for i in 0..<cities.count { // city 개수만큼 반복
         let city = cities[i].lowercased() // 모든 city는 소문자로 변환한다.
         
         // 캐시에 해당 도시가 있는지 판단한다.
-        if caches.contains(where: { $0.city == city }) { // 캐시에 해당 도시가 있는 경우 !!
+        if cache.contains(where: { $0.city == city }) { // 캐시에 해당 도시가 있는 경우 !!
             runTime += 1
             
-            for cacheIndex in 0..<caches.count {
-                if caches[cacheIndex].city == city { // 해당 캐시를 찾아 사용횟수를 1 추가한다.
+            for cacheIndex in 0..<cache.count {
+                if cache[cacheIndex].city == city { // 해당 캐시를 찾아 사용횟수를 1 추가한다.
 //                    caches[cacheIndex].count += 1 // 캐시 사용횟수를 추가한다. (사용 횟수는 사용되지 않았다..)
-                    caches[cacheIndex].seq = i // 캐시의 seq를 최신으로 변경한다.
+                    cache[cacheIndex].seq = i // 캐시의 seq를 최신으로 변경한다.
                     break
                 }
             }
         } else { // 캐시에 해당 도시가 없는 경우
             runTime += 5
             
-            if caches.count < cacheSize { // 캐시가 개수를 채우지 못한 경우
-                caches.append(.init(seq: i, city: city, count: 1)) // 캐시에 새로운 캐시를 담는다.
+            if cache.count < cacheSize { // 캐시가 개수를 채우지 못한 경우
+                cache.append(.init(seq: i, city: city, count: 1)) // 캐시에 새로운 캐시를 담는다.
                 
             } else { // 캐시가 가득 채워진 경우
                 // count... (사용 횟수는 사용되지 않았다..)
 //                caches.sort(by: { $0.count < $1.count || $0.seq < $1.seq }) // 사용 횟수가 적고, 가장 오래된 캐시를 제거하기 위함.
-                caches.sort(by: { $0.seq < $1.seq }) // 사용 횟수가 적고, 가장 오래된 캐시를 제거하기 위함.
-                caches.removeFirst()
-                caches.append(.init(seq: i, city: city, count: 1)) // 새로운 캐시를 저장한다.
+                cache.sort(by: { $0.seq < $1.seq }) // 사용 횟수가 적고, 가장 오래된 캐시를 제거하기 위함.
+                cache.removeFirst()
+                cache.append(.init(seq: i, city: city, count: 1)) // 새로운 캐시를 저장한다.
             }
         }
     }
@@ -87,6 +91,7 @@ func solution(_ cacheSize:Int, _ cities:[String]) -> Int {
     return runTime
 }
 
+print("Solution 1")
 print(solution(3, ["Jeju", "Pangyo", "Seoul", "NewYork", "LA", "Jeju", "Pangyo", "Seoul", "NewYork", "LA"])) // 50
 print(solution(3, ["Jeju", "Pangyo", "Seoul", "Jeju", "Pangyo", "Seoul", "Jeju", "Pangyo", "Seoul"])) // 21
 print(solution(2, ["Jeju", "Pangyo", "Seoul", "NewYork", "LA", "SanFrancisco", "Seoul", "Rome", "Paris", "Jeju", "NewYork", "Rome"])) // 60
@@ -94,3 +99,42 @@ print(solution(5, ["Jeju", "Pangyo", "Seoul", "NewYork", "LA", "SanFrancisco", "
 print(solution(2, ["Jeju", "Pangyo", "NewYork", "newyork"])) // 16
 print(solution(0, ["Jeju", "Pangyo", "Seoul", "NewYork", "LA"])) // 25
 print(solution(5, ["SEOUL", "SEOUL", "SEOUL"])) // 7
+
+
+// MARK: - 리팩토링..
+func LRU(_ cacheSize:Int, _ cities:[String]) -> Int {
+    guard cacheSize > 0 else { return cities.count * 5 } // cache가 1보다 작은경우 모든 실행시간이 5씩 걸린다.
+
+    var runTime = 0 // 실행시간을 담는 변수
+    var cache:[String] = [] // 캐시를 담는 변수
+    
+    for city in cities {
+        let lowCity = city.lowercased() // 모두 소문자로 변환한다.
+        
+        if cache.contains(lowCity), // 캐시에 해당 city가 있는 경우
+           let index = cache.firstIndex(of: lowCity) { // 캐시에 들어있는 city의 index 추출
+            cache.remove(at: index) // 해당 city를 캐시에서 제거 (최신 사용된 캐시로 변경하기 위함)
+            
+            runTime += 1
+        } else { // 캐시에 해당 city가 없는 경우
+            if cache.count == cacheSize { // 캐시가 가득찬 경우
+                cache.removeFirst() // 가장 오래된 캐시 삭제
+            }
+            
+            runTime += 5
+        }
+        
+        cache.append(lowCity)
+    }
+    
+    return runTime
+}
+
+print("\nSolution 2 (LRU)")
+print(LRU(3, ["Jeju", "Pangyo", "Seoul", "NewYork", "LA", "Jeju", "Pangyo", "Seoul", "NewYork", "LA"])) // 50
+print(LRU(3, ["Jeju", "Pangyo", "Seoul", "Jeju", "Pangyo", "Seoul", "Jeju", "Pangyo", "Seoul"])) // 21
+print(LRU(2, ["Jeju", "Pangyo", "Seoul", "NewYork", "LA", "SanFrancisco", "Seoul", "Rome", "Paris", "Jeju", "NewYork", "Rome"])) // 60
+print(LRU(5, ["Jeju", "Pangyo", "Seoul", "NewYork", "LA", "SanFrancisco", "Seoul", "Rome", "Paris", "Jeju", "NewYork", "Rome"])) // 52
+print(LRU(2, ["Jeju", "Pangyo", "NewYork", "newyork"])) // 16
+print(LRU(0, ["Jeju", "Pangyo", "Seoul", "NewYork", "LA"])) // 25
+print(LRU(5, ["SEOUL", "SEOUL", "SEOUL"])) // 7
