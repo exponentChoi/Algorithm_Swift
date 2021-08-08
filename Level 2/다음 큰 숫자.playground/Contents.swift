@@ -30,15 +30,11 @@
 import Foundation
 
 func solution(_ n:Int) -> Int {
-    let binary = String(n, radix: 2)
-    let count = binary.filter { $0 == "1" }.count
     var answer = n + 1
     
     while true {
-        let second = String(answer, radix: 2)
-        let secCount = second.filter { $0 == "1" }.count
-        
-        if count == secCount {
+        // nonzeroBitCount: 2진수에서 0이 아닌 value의 개수 (즉 1의 개수를 알려준다.)
+        if n.nonzeroBitCount == answer.nonzeroBitCount {
             break
         }
         
