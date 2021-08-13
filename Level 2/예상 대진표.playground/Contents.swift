@@ -35,10 +35,30 @@ func solution(_ n:Int, _ a:Int, _ b:Int) -> Int {
     return answer
 }
 
-print(solution(8, 4, 1)) // 2
-print(solution(8, 4, 2)) // 2
-print(solution(8, 4, 3)) // 1
-print(solution(8, 4, 5)) // 3
-print(solution(8, 4, 6)) // 3
-print(solution(8, 4, 7)) // 3
-print(solution(8, 4, 8)) // 3
+//print(solution(8, 4, 1)) // 2
+//print(solution(8, 4, 2)) // 2
+//print(solution(8, 4, 3)) // 1
+//print(solution(8, 4, 5)) // 3
+//print(solution(8, 4, 6)) // 3
+//print(solution(8, 4, 7)) // 3
+//print(solution(8, 4, 8)) // 3
+
+func test() {
+    
+    let a = [5.123123, 5.456456, 5.512512, 5.567567, 5.657657, 5.765765, -3.453453, -3.658658]
+    let digit: Double = pow(10, 3)
+    print(digit)
+    
+    print("let digit: Double = pow(10, 3) // 10의 3제곱")
+    a.forEach {
+        print("floor(\($0) * digit) / digit // \(floor($0 * digit) / digit)")
+    }
+    
+    let b = 5.1231283712893781293
+    
+    let c = String(format: "%.6f", b)
+
+    print("c(\(c)) : \(c)")
+}
+
+test()
