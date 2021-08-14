@@ -51,49 +51,74 @@
 import Foundation
 
 func solution(_ places:[[String]]) -> [Int] {
-    var answer:[Int] = Array(repeating: 1, count: places.count)
+    var answer:[Int] = []
+    
+    places.forEach { place in
+        let newPlace = place.map { $0.map { String($0) }} // 문자열을 하나씩 분리하기
+        answer.append(distance(newPlace))
+    }
         
-        struct Group {
-            let location:[Int]
-            let type: String
-        }
-        
-        places.enumerated().forEach { index, place in
-            let newPlace = place.map { $0.map { String($0) }}
-            
-            roop: for i in 1..<newPlace.count {
-                for j in 1..<newPlace[i].count {
-                    let lt = Group(location: [i - 1, j - 1], type: newPlace[i - 1][j - 1]) // left top
-                    let rt = Group(location: [i - 1, j], type: newPlace[i - 1][j]) // right top
-                    let lb = Group(location: [i, j - 1], type: newPlace[i][j - 1]) // left bottom
-                    let rb = Group(location: [i, j], type: newPlace[i][j]) // right bottom
-                    
-                    // P가 2개 이상일 때만 검사한다.
-                    let persons = [lt, rt, lb, rb].filter({ $0.type == "P" })
-                    if persons.count > 2 { // 네 칸에 세명이 있으면 바로 종료
-                        answer[index] = 0
-                        break roop
-                    } else if persons.count == 2 { // 네 칸에 두명이 있을 경우
-                        // 맨해튼 거리가 2 이상일 경우 파티션 갯수 체크
-                        if abs(persons.first!.location[0] - persons.last!.location[0])
-                            + abs(persons.first!.location[1] - persons.last!.location[1]) > 1 {
-                            // 파티션이 2개가 아니면 거리두기를 지키지 않음
-                            if [lt, rt, lb, rb].filter ({ $0.type == "X" }).count != 2 {
-                                answer[index] = 0
-                                break roop
+    return answer
+}
+
+
+func distance(_ places:[[String]]) -> Int {
+    let dx = [1, 2, 0, 0, 1, -1] // x좌표를 이동하여 확인하기 위함. (-1은 왼쪽 아래의 경우도 확인을 해야하기 때문)
+    let dy = [0, 0, 1, 2, 1, 1] // y좌표를 이동하여 확인하기 위함.
+    
+    for row in 0..<5 {
+        for col in 0..<5 {
+            if places[row][col] == "P" {
+                for i in 0..<dx.count {
+
+                    let (x, y) = (row + dx[i], col + dy[i])
+                
+                    // x, y 범위가 벗어나지 않고, (x,y)가 "P"인 경우
+                    if (0..<5).contains(x) && (0..<5).contains(y) && places[x][y] == "P" {
+                        if abs(row - x) + abs(col - y) == 1 { // 맨해튼거리가 0인경우 거리두기를 지키지 않은것임.
+                            return 0
+                        }
+                        if row == x { // 같은 row에 있는 경우
+                            if places[row][col + 1] != "X" { // 가운데가 "X(파티션)"인지 확인
+                                return 0
                             }
-                        } else { // 맨해튼 거리가 2가 아닌 경우 붙어있으므로 거리두기를 지키지 않았다.
-                            answer[index] = 0
-                            break roop
+                        } else if col == y {  // 같은 col에 있는 경우
+                            if places[row + 1][col] != "X" { // 가운데가 "X(파티션)"인지 확인
+                                return 0
+                            }
+                        } else {
+                            if row > x { // row가 x보다 앞에 있는 경우
+                                // 대각선 사이에 파티션이 두개가 있는지 파악하여 없으면 0 반환
+                                if places[row - 1][col] != "X" || places[row][col + 1] != "X"{
+                                    return 0
+                                }
+                            } else {
+                                // 대각선 사이에 파티션이 두개가 있는지 파악하여 없으면 0 반환
+                                if places[row + 1][col] != "X" || places[row][col + 1] != "X"{
+                                    return 0
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-        
-        return answer
+    }
+    
+    return 1
 }
 
-print(solution([["POOOP", "OXXOX", "OPXPX", "OOXOX", "POXXP"], ["POOPX", "OXPXP", "PXXXO", "OXXXO", "OOOPP"], ["PXOPX", "OXOXP", "OXPOX", "OXXOP", "PXPOX"], ["OOOXX", "XOOOX", "OOOXX", "OXOOX", "OOOOO"], ["PXPXP", "XPXPX", "PXPXP", "XPXPX", "PXPXP"],        ["PPPOO","PXXXX","OOOOO","OOOOO","OOOOO"]])) // [1, 0, 1, 1, 1, 0]
 
-//print(solution([["PPPOO","PXXXX","OOOOO","OOOOO","OOOOO"]]))
+
+print(solution([["POOOP", "OXXOX", "OPXPX", "OOXOX", "POXXP"],
+                ["POOPX", "OXPXP", "PXXXO", "OXXXO", "OOOPP"],
+                ["PXOPX", "OXOXP", "OXPOX", "OXXOP", "PXPOX"],
+                ["OOOXX", "XOOOX", "OOOXX", "OXOOX", "OOOOO"],
+                ["PXPXP", "XPXPX", "PXPXP", "XPXPX", "PXPXP"],
+                ["PPPOO","PXXXX","OOOOO","OOOOO","OOOOO"]])) // [1, 0, 1, 1, 1, 0]
+
+print(solution([["XPOOO",
+                 "PXXXX",
+                 "OOOOO",
+                 "OOOPX",
+                 "OOOXP"]]))
