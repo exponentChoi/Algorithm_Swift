@@ -48,19 +48,18 @@
 import Foundation
 
 func solution(_ rows:Int, _ columns:Int, _ queries:[[Int]]) -> [Int] {
-    var count = 1
-    var board:[[Int]] = []
     var answer:[Int] = []
     
-    (0..<rows).forEach { _ in
-        board.append((0..<columns).map { count + $0 })
-        count += rows
+    // board 생성하기
+    var board:[[Int]] = (0..<rows).map { row in
+        (1...columns).map { (row * columns) + $0 }
     }
     
+    // querie 개수만큼 반복
     queries.forEach { querie in
-        let result = rotate(board: board, querie: querie)
-        board = result.0
-        answer.append(result.1)
+        let result = rotate(board: board, querie: querie) // board 회전시키긴 결과 (board, min number)
+        board = result.0 // rotate board
+        answer.append(result.1) // min number
     }
     
     return answer
@@ -75,34 +74,35 @@ func rotate(board:[[Int]], querie:[Int]) -> ([[Int]], Int) {
     let y2 = querie[3] - 1
     
     var copyBoard = board
-    var value = board[x1][y1]
-    var min = value
+    var min = board[x1][y1]
+    var value = min {
+        didSet { // 제일 작은수를 min에 저장
+            min = oldValue < min ? oldValue : min
+        }
+    }
     
-    for i in y1..<y2 {
+    // (x1,y1) -> (x1,y2)
+    for i in stride(from: y1, to: y2, by: +1) {
         copyBoard[x1][i + 1] = value
         value = board[x1][i + 1]
-        min = value < min ? value : min
     }
     
-    value = board[x1][y2]
-    for i in x1..<x2 {
+    // (x1,y2) -> (x2,y2)
+    for i in stride(from: x1, to: x2, by: +1) {
         copyBoard[i + 1][y2] = value
         value = board[i + 1][y2]
-        min = value < min ? value : min
     }
     
-    value = board[x2][y2]
+    // (x2,y2) -> (x2,y1)
     for i in stride(from: y2, to: y1, by: -1) {
         copyBoard[x2][i - 1] = value
         value = board[x2][i - 1]
-        min = value < min ? value : min
     }
     
-    value = board[x2][y1]
+    // (x2,y1) -> (x1,y1)
     for i in stride(from: x2, to: x1, by: -1) {
         copyBoard[i - 1][y1] = value
         value = board[i - 1][y1]
-        min = value < min ? value : min
     }
     
     return (copyBoard, min)
@@ -111,3 +111,5 @@ func rotate(board:[[Int]], querie:[Int]) -> ([[Int]], Int) {
 print(solution(6, 6, [[2,2,5,4],[3,3,6,6],[5,1,6,3]])) // [8, 10, 25]
 print(solution(3, 3, [[1,1,2,2],[1,2,2,3],[2,1,3,2],[2,2,3,3]])) // [1, 1, 5, 3]
 print(solution(100, 97, [[1,1,100,97]])) // [1]
+print(solution(4, 4, [[2,2,4,4]])) // 6
+print(solution(10, 10, [[4,4,8,8], [7,4,8,9], [4,4,8,8]]))
