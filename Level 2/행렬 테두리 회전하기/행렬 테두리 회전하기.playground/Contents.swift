@@ -55,6 +55,18 @@ func solution(_ rows:Int, _ columns:Int, _ queries:[[Int]]) -> [Int] {
         (1...columns).map { (row * columns) + $0 }
     }
     
+    var count = 1
+    var board2:[[Int]] = []
+    
+    (0..<rows).forEach { _ in
+        board2.append((0..<columns).map { count + $0 })
+        count += rows
+    }
+    
+    board.forEach { print($0) }
+    print("--------- 구분선 ---------")
+    board2.forEach { print($0) }
+    
     // querie 개수만큼 반복
     queries.forEach { querie in
         let result = rotate(board: board, querie: querie) // board 회전시키긴 결과 (board, min number)
@@ -110,6 +122,7 @@ func rotate(board:[[Int]], querie:[Int]) -> ([[Int]], Int) {
 
 print(solution(6, 6, [[2,2,5,4],[3,3,6,6],[5,1,6,3]])) // [8, 10, 25]
 print(solution(3, 3, [[1,1,2,2],[1,2,2,3],[2,1,3,2],[2,2,3,3]])) // [1, 1, 5, 3]
-print(solution(100, 97, [[1,1,100,97]])) // [1]
+//print(solution(100, 97, [[1,1,100,97]])) // [1]
 print(solution(4, 4, [[2,2,4,4]])) // 6
 print(solution(10, 10, [[4,4,8,8], [7,4,8,9], [4,4,8,8]]))
+print(solution(5, 1, [[1,1,1,1]]))
