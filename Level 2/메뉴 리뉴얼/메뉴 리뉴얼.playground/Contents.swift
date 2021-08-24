@@ -65,25 +65,26 @@ func solution(_ orders:[String], _ course:[Int]) -> [String] {
     var answer:[String] = []
     
     for c in course {
-        let filterOrder = orders.filter { c <= $0.count }
+        let filterOrder = orders.filter { c <= $0.count } // course보다 작은 경우 필터
         if filterOrder.count == 0 { continue } // 시간을 줄이기 위함이다.
         
         var combine:[String] = []
-        filterOrder.forEach {
+        filterOrder.forEach { // 단품을 가지고 만들 수 있는 모든 조합 생성
             combine += combination(str: String($0.sorted()), length: c)
         }
         
+        // 요리를 주문한 횟수를 누적시킨다.
         let counts = combine.reduce(into: [:], { result, str in
             result[str, default: 0] += 1
         })
         
-        if let max = counts.values.max(), max >= 2 {
-            answer += counts.filter { $0.value == max }
-                .map { $0.key}
+        if let max = counts.values.max(), max >= 2 { // 누적 횟수가 가장 많은 수
+            answer += counts.filter { $0.value == max } // 누적이 가능 많은 수의 요리들
+                .map { $0.key }
         }
     }
     
-    return answer.sorted()
+    return answer.sorted() // 최종적으로 오름차순으로 반환
 }
 
 /// 문자 자리수만큼 조합하기.
