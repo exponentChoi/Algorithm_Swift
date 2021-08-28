@@ -64,45 +64,76 @@
  ABABABABABABABAB    [1, 2, 27, 29, 28, 31, 30]
  */
 
+/*
+ 1. K
+   - 1.1 K A 없으니까 저장. K의 인덱스 저장
+ 2. A
+   - 2.1 A K 없으니까 저장. A의 인덱스 저장
+ 3. K
+   - 3.1 K A 있음.
+   - 3.2 K A O 없으니까 저장. KA의 인덱스 저장
+ 4. O
+   - 4.1 O 가 마지막이고 있으니까, O의 인덱스 저장
+ */
 func solution(_ msg:String) -> [Int] {
     var answer:[Int] = []
-    var dictionary = (65...90).map { String(UnicodeScalar($0)) }
-    var word = ""
-    var maxWord = ""
-    var index = -1
-    var message = msg
+    var dictionary = (65...90).map { String(UnicodeScalar($0)) } // 1. 길이가 1인 모든 단어를 포함하도록 사전을 초기화한다.
     
-    for value in msg.enumerated() {
-        if index >= value.offset { continue }
-        let str = String(value.element)
-        message.removeFirst()
-        
-        word += str
-        maxWord = word
-        
-        min: for c in message.enumerated() {
-            let s = String(c.element)
-            word += s
-            
-            if dictionary.contains(word) {
-                maxWord = word
-                index = value.offset + c.offset + 1
-            } else {
-                dictionary.append(word)
-                let dictionaryNum = dictionary.firstIndex(of: String(maxWord))! + 1
-                answer.append(dictionaryNum)
-                maxWord = ""
-                word = ""
-                break min
-            }
-        }
-    }
-    
-    
-    print(dictionary)
     return answer
 }
 
 print(solution("KAKAO")) // [11, 1, 27, 15]
 print(solution("TOBEORNOTTOBEORTOBEORNOT")) // [20, 15, 2, 5, 15, 18, 14, 15, 20, 27, 29, 31, 36, 30, 32, 34]
 print(solution("ABABABABABABABAB")) // [1, 2, 27, 29, 28, 31, 30]
+
+// 출처 - https://apple-apeach.tistory.com/64
+func solution2(_ msg:String) -> [Int] {
+    var answer:[Int] = []
+    var dictionary = (65...90).reduce(into: [:], { result, i in
+        result[String(UnicodeScalar(i))] = Int(i - 64)
+    })
+    let map = msg.map { String($0) }
+    var pos = 0
+    var count = 26
+    var max = 1
+    
+    let compress: () -> String = {
+        var tmp = map[pos]
+        var word = map[pos]
+        // 2. 가장 긴 문자열 찾기
+        if pos + 1 < msg.count {
+            var tmpMax = max
+            for i in pos + 1 ..< msg.count {
+                if tmpMax == 0 { break }
+                tmp += map[i]
+                if dictionary[tmp] != nil { word = tmp }
+                tmpMax -= 1
+            }
+        }
+        
+        // 3. w에 해당하는 사전의 색인 번호를 출력하고, 입력에서 w를 제거한다.
+        if let idx = dictionary[word] {
+            answer.append(idx) // 출력
+        }
+        
+        // 4.입력에서 처리되지 않은 다음 글자가 남아있다면(c), w+c에 해당하는 단어를 사전에 등록한다.
+        if pos + word.count < msg.count {
+            count += 1
+            let ipt = word + map[pos + word.count]
+            dictionary[ipt] = count // 추가
+            if ipt.count > max { max = ipt.count }
+        }
+        
+        return word
+    }
+    
+    while pos < msg.count {
+        pos += compress().count
+    }
+    
+    return answer
+}
+
+print(solution2("KAKAO")) // [11, 1, 27, 15]
+print(solution2("TOBEORNOTTOBEORTOBEORNOT")) // [20, 15, 2, 5, 15, 18, 14, 15, 20, 27, 29, 31, 36, 30, 32, 34]
+print(solution2("ABABABABABABABAB")) // [1, 2, 27, 29, 28, 31, 30]
