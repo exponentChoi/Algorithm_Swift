@@ -76,37 +76,39 @@
    - 4.1 O 가 마지막이고 있으니까, O의 인덱스 저장
  */
 func solution(_ msg:String) -> [Int] {
-    var answer:[Int] = []
-    var dictionary = (65...90).map { String(UnicodeScalar($0)) } // 1. 길이가 1인 모든 단어를 포함하도록 사전을 초기화한다.
-    let map = msg.map { String($0) }
+    var answer:[Int] = [] // Dictionary의 index를 저장하는 변수
+    var dictionary = (65...90).map { String(UnicodeScalar($0)) } // 길이가 1인 모든 단어를 포함하도록 사전을 초기화한다.
+    let map = msg.map { String($0) } // 압축할 msg를 한글자씩 분리하여 배열형태로 만든다.
     
-    var word = ""
-    var index = 0
-    while index < map.count {
-        word += map[index]
+    var word = "" // 비교하기 위해 한글자씩 추가하여 담는 변수
+    var index = 0 // msg의 몇번 째 글자인지 파악하기 위한 index
+    while index < map.count { // index가 msg보다 크거나 같은경우 더이상 비교할 문자가 없으니 종료한다.
+        word += map[index] // word변수에 msg를 하나씩 저장한다.
         
-        for i in (index + 1)..<map.count {
-            if dictionary.contains(word) {
+        for i in (index + 1)..<map.count { // index에 1을 더하여 msg문자열의 숫자만큼 반복문을 돌린다.
+            if dictionary.contains(word) { // Dictionary에 word가 포함된 경우
                 word += map[i]
                 
                 if !dictionary.contains(word) {
                     if let dictionaryNum: Int = dictionary.firstIndex(of: String(word.dropLast())) {
+                        // 마지막 글자를 제거한 word를 Dictionary에서 검색하여 해당 index를 최종 결과를 반환하는 변수에 저장한다.
                         answer.append(dictionaryNum + 1)
                     }
                     
-                    dictionary.append(word)
-                    word = ""
+                    dictionary.append(word) // 사전에 word를 추가한다.
+                    word = "" // word를 초기화하여 다음 index부터의 글자를 파악할 수 있도록 한다.
                     break
                 } else {
                     index += 1
                 }
-            } else {
+            } else { // Dictionary에 word가 포함되지 않은 경우
                 if let dictionaryNum:Int = dictionary.firstIndex(of: String(word.dropLast())) {
+                    // 마지막 글자를 제거한 word를 Dictionary에서 검색하여 해당 index를 최종 결과를 반환하는 변수에 저장한다.
                     answer.append(dictionaryNum + 1)
                 }
                 
-                dictionary.append(word)
-                word = ""
+                dictionary.append(word) // 사전에 word를 추가한다.
+                word = "" // word를 초기화하여 다음 index부터의 글자를 파악할 수 있도록 한다.
                 break
             }
         }
@@ -114,6 +116,7 @@ func solution(_ msg:String) -> [Int] {
         index += 1
     }
     
+    // 위에서 걸러지지 못한 word를 처리한다.
     if let dictionaryNum:Int = dictionary.firstIndex(of: String(word)) {
         answer.append(dictionaryNum + 1)
     }
@@ -121,6 +124,7 @@ func solution(_ msg:String) -> [Int] {
     return answer
 }
 
+print("- Solution 1")
 print(solution("KAKAO")) // [11, 1, 27, 15]
 print(solution("TOBEORNOTTOBEORTOBEORNOT")) // [20, 15, 2, 5, 15, 18, 14, 15, 20, 27, 29, 31, 36, 30, 32, 34]
 print(solution("ABABABABABABABAB")) // [1, 2, 27, 29, 28, 31, 30]
@@ -174,6 +178,7 @@ func solution2(_ msg:String) -> [Int] {
     return answer
 }
 
+print("\n- Solution 2")
 print(solution2("KAKAO")) // [11, 1, 27, 15]
 print(solution2("TOBEORNOTTOBEORTOBEORNOT")) // [20, 15, 2, 5, 15, 18, 14, 15, 20, 27, 29, 31, 36, 30, 32, 34]
 print(solution2("ABABABABABABABAB")) // [1, 2, 27, 29, 28, 31, 30]
