@@ -78,6 +78,45 @@
 func solution(_ msg:String) -> [Int] {
     var answer:[Int] = []
     var dictionary = (65...90).map { String(UnicodeScalar($0)) } // 1. 길이가 1인 모든 단어를 포함하도록 사전을 초기화한다.
+    let map = msg.map { String($0) }
+    
+    var word = ""
+    var index = 0
+    while index < map.count {
+        word += map[index]
+        
+        for i in (index + 1)..<map.count {
+            if dictionary.contains(word) {
+                word += map[i]
+                
+                if !dictionary.contains(word) {
+                    if let dictionaryNum: Int = dictionary.firstIndex(of: String(word.dropLast())) {
+                        answer.append(dictionaryNum + 1)
+                    }
+                    
+                    dictionary.append(word)
+                    word = ""
+                    break
+                } else {
+                    index += 1
+                }
+            } else {
+                if let dictionaryNum:Int = dictionary.firstIndex(of: String(word.dropLast())) {
+                    answer.append(dictionaryNum + 1)
+                }
+                
+                dictionary.append(word)
+                word = ""
+                break
+            }
+        }
+        
+        index += 1
+    }
+    
+    if let dictionaryNum:Int = dictionary.firstIndex(of: String(word)) {
+        answer.append(dictionaryNum + 1)
+    }
     
     return answer
 }
@@ -85,8 +124,9 @@ func solution(_ msg:String) -> [Int] {
 print(solution("KAKAO")) // [11, 1, 27, 15]
 print(solution("TOBEORNOTTOBEORTOBEORNOT")) // [20, 15, 2, 5, 15, 18, 14, 15, 20, 27, 29, 31, 36, 30, 32, 34]
 print(solution("ABABABABABABABAB")) // [1, 2, 27, 29, 28, 31, 30]
+print(solution("AAAAAA")) // [1, 27, 28]
 
-// 출처 - https://apple-apeach.tistory.com/64
+// MARK: - 다른사람 문제풀이 [출처 - https://apple-apeach.tistory.com/64]
 func solution2(_ msg:String) -> [Int] {
     var answer:[Int] = []
     var dictionary = (65...90).reduce(into: [:], { result, i in
@@ -137,3 +177,4 @@ func solution2(_ msg:String) -> [Int] {
 print(solution2("KAKAO")) // [11, 1, 27, 15]
 print(solution2("TOBEORNOTTOBEORTOBEORNOT")) // [20, 15, 2, 5, 15, 18, 14, 15, 20, 27, 29, 31, 36, 30, 32, 34]
 print(solution2("ABABABABABABABAB")) // [1, 2, 27, 29, 28, 31, 30]
+print(solution2("AAAAAA")) // [1, 27, 28]
