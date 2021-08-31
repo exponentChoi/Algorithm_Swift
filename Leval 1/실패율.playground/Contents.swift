@@ -44,38 +44,51 @@
 
 import Foundation
 
+// MARK: - 내가 푼 코드... 시간초과
 func solution(_ N:Int, _ stages:[Int]) -> [Int] {
-    var items = stages // stages 변수로 사용
-    var answer:[Int:Double] = [:] // stage와 실패율 Ket/value로 저장
+    var answer:[Int: Double] = [:]
+    var pass = stages
     
-    // stage 1부터 N 까지
-    for i in 1...N {
-        answer[i] = Double(items.filter { $0 <= i }.count) / Double(items.count) // stage와 실패율 저장
-        items = items.filter { !($0 <= i) } // 실패한 stage들은 items 항목에서 제거
+    for number in (1...N) {
+        if pass.count > 0 {  // pass가 0개 이상인 경우만 아래 로직을 탄다.(시간초과나서 한번 추가해봄...)
+            let challengers = Double(pass.count)
+            pass = pass.filter { $0 > number }
+            answer[number] = (challengers - Double(pass.count)) / challengers
+        } else {
+            answer[number] = 0
+        }
     }
     
-    // 실패율을 내림차순으로 정렬 후 stage를 반환시키며 완료!!
     return answer.sorted(by: <).sorted(by: { $0.value > $1.value }).map { $0.key }
 }
 
-print(solution(5, [2, 1, 2, 6, 2, 4, 3, 3]))
-print(solution(4, [4,4,4,4,4]))
+print(solution(5, [2, 1, 2, 6, 2, 4, 3, 3])) // [3,4,2,1,5]
+print(solution(4, [4,4,4,4,4])) // [4,1,2,3]
 
 
-// MARK: - 다른사람 풀이 해석
-// filter(고차함수) 사용을 줄였지만 시간초과로 실패..
+// MARK: - 다른사람 풀이 참고 후 코드 작성
+// 출처 - https://keeplo.tistory.com/160
 func solution2(_ N:Int, _ stages:[Int]) -> [Int] {
-    var answer: [Int: Double] = [:]
-    var p = stages.count
+    // filter를 사용하면 굉장히 많은 반복문을 돌리게 된다.
+    // (3, [1, 3, 3, 3, 3, 3, 3, 3, 3])로 예를 들면 아래와 같다.
+    // (ex: 9개 중 1개 필터링 => 8개 중 0개 필터링 => 8개 중 8개 필터링 -> 총 25번)
+    //
+    // 하지만 아래 방법처럼 할 경우 stage의 수만큼 반복하기 때문에 시간이 굉장히 빠르다.
+    var answer = [Int:Double]()
+    var challengers = Array(repeating: 0, count: N + 1) // 각 스테이지별 도전하는 생존자 수를 저장한다.
     
-    for i in 1...N {
-        let failed = stages.filter { $0 == i }.count
-        answer[i] = Double(failed) / Double(p)
-        p -= failed
+    for stage in stages {
+        for i in 0..<stage { // 각 통과한 stage만큼 반복
+            challengers[i] += 1 // 예를들어 stage 2까지 통과한 경우 [0, 1, 2] index에 +1을 해준다.
+        }
     }
     
-    return answer.sorted(by: <).sorted(by: { $0.value > $1.value }).map { $0.key }
+    for i in (0..<N) { // 저장해둔 생존자 수를 순차적으로 계산하여 배열에 담는다.
+        answer[i + 1] = Double(challengers[i] - challengers[i + 1]) / Double(challengers[i])
+    }
+    
+    return answer.sorted(by: <).sorted(by: {$0.value > $1.value}).map({ $0.key })
 }
 
-print(solution2(5, [2, 1, 2, 6, 2, 4, 3, 3]))
-print(solution2(4, [4,4,4,4,4]))
+print(solution2(5, [2, 1, 2, 6, 2, 4, 3, 3])) // [3,4,2,1,5]
+print(solution2(4, [4,4,4,4,4])) // [4,1,2,3]
