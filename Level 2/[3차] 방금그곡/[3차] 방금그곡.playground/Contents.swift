@@ -39,50 +39,46 @@
  */
 import Foundation
 
+// 일치하는 곳
+struct Music {
+    let title: String
+    let duration: Int
+}
+
 func solution(_ m:String, _ musicinfos:[String]) -> String {
-    var answer = "(None)"
+    var answer:[Music] = [] // 일치하는 곡 저장
+    var remember = m // 기억하고 있는 멜로디
+    let sharp = ["C#":"c", "D#":"d", "F#":"f", "G#":"f", "A#":"a"] // #코드를 치환해줄 문자열
     
-    // 기억하고 있는 멜로디 저장
-    let remember = m.reduce(into: [String](), { result, element in
-        let str = String(element)
-        str == "#" ? result[result.count - 1] += "#" : result.append(str)
-    })
+    sharp.forEach { // 기억하고 있는 멜로디에서 #이 들어간 코드를 치환한다.
+        remember = remember.replacingOccurrences(of: $0.key, with: $0.value)
+    }
     
-    loop:for musicinfo in musicinfos {
+    for musicinfo in musicinfos {
         let info = musicinfo.components(separatedBy: ",") // 정보 분리
-        var runTime = runTimes(info[0], info[1]) // 음악 재생시간 구하기
+        let runTime = runTimes(info[0], info[1]) // 음악 재생시간 구하기
         
-        let separatedCode = info[3].map { String($0) } // 주어진 코드를 하나씩 분리한다.
-        var code = [String]() // 코드를 정리하여 담는다.
-        var index = 0
-        
-        while code.count < runTime { // 정리한 악보
-            let value = separatedCode[index % separatedCode.count] // 분리된 악보를 순서대로 검색한다.
-            if value == "#" {
-                code[code.count - 1] += "#"
-            } else {
-                code.append(value)
-            }
-            
-            index += 1
+        var separatedCode = info[3] // 재생 악보
+        sharp.forEach { // 악보에 #이 들어간 코드를 치환한다.
+            separatedCode = separatedCode.replacingOccurrences(of: $0.key, with: $0.value)
         }
         
-        var rIndex = 0 // remember에 참조하기 위한 index
-        for i in 0..<code.count { // code와 하나씩 일치하는지 비교한다.
-            if remember.count <= rIndex { // rIndex가 기억하고 있는것과 일치한 경우 반복분을 종료한다.
-                answer = info[2]
-                break loop
-            }
-            
-            if remember[rIndex] == code[i] { // 값이 같은 경우
-                rIndex += 1
-            } else {
-                rIndex = 0
-            }
+        let chords = separatedCode.map { String($0) } // 치환한 악보를 한글자씩 분리
+        var plays = "" // 총 재생시간만큼 저장
+        var playCount = 0 // 재생시간 저장
+        
+        while playCount < runTime { // 정리한 악보
+            let value = chords[playCount % chords.count] // 재생시간 나누기 악보의 나머지 값으로 index 추출
+            plays += value // 실행된 코드 저장
+            playCount += 1 // 재생시간 추가
+        }
+        
+        if plays.contains(remember) { // 기억하고있는 멜로디와 같은것이 있는경우 바로 반환
+            answer.append(Music(title: info[2], duration: runTime))
         }
     }
     
-    return answer
+    return answer.isEmpty ? "(None)" : answer.sorted(by: { $0.duration > $1.duration }).first!.title // 실행시간이 가장 길고, 먼저 실행한 곡을 반환한다.
 }
 
 /// 시간차이 구하기 format: "HH:mm"
@@ -90,7 +86,7 @@ func runTimes(_ start: String, _ end: String) -> Int {
     let s = start.components(separatedBy: ":").compactMap { Int($0) }
     let e = end.components(separatedBy: ":").compactMap { Int($0) }
     
-    return abs((e[0] * 60) + e[1]) - ((s[0] * 60) + s[1])
+    return abs((e[0] * 60) + e[1]) - ((s[0] * 60) + s[1]) // 음수를 대비해 절대값 사용
     
     // 프로그래머스에서 DateFormatter() 사용이 안된다..
 //    let dateFormatter = DateFormatter()
@@ -105,7 +101,7 @@ func runTimes(_ start: String, _ end: String) -> Int {
 }
 
 
-
+print("- solution 1 -")
 print(solution("ABCDEFG", ["12:00,12:14,HELLO,CDEFGAB", "13:00,13:05,WORLD,ABCDEF"])) // "HELLO"
 print(solution("CC#BCC#BCC#BCC#B", ["04:00,04:08,BAR,CC#BCC#BCC#B", "03:00,03:30,FOO,CC#B", "04:00,04:08,BAR,CC#BCC#BCC#B"])) // "FOO"
 print(solution("ABC", ["12:00,12:14,HELLO,C#DEFGAB", "13:00,13:05,WORLD,ABCDEF"])) // "WORLD"
