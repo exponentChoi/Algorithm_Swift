@@ -72,29 +72,95 @@
 
 import Foundation
 
+// MARK: - 1차 제출 (시간초과)
 func solution(_ info:[String], _ query:[String]) -> [Int] {
     let infos = info.map { $0.components(separatedBy: " ") } // info 공백으로 분리
     let querys = query.map { $0.components(separatedBy: " ").filter { $0 != "and" } } // query 공백으로 분리 후 and 제거
     
     return querys.map { q -> Int in
         return infos.map { i -> Int in
-            var count = 1
             
-            for zip in zip(q, i) { // query와 infos를 묶어서 동시비교
-                if let qNum = Int(zip.0), let iNum = Int(zip.1) { // 숫자인 경우
-                    if iNum < qNum { // info가 query보다 낮은경우 0으로 반환
-                        count = 0
-                        break
-                    }
-                } else if !(zip.0 == "-" || zip.0 == zip.1) { // 서로 다르며 "-"도 아닌 경우 0으로 반환
-                    count = 0
-                    break
-                }
+            if (q[0] == "-" || q[0] == i[0]) && (q[1] == "-" || q[1] == i[1]) && (q[2] == "-" || q[2] == i[2]) && (q[3] == "-" || q[3] == i[3]) && (Int(i[4])! >= Int(q[4])!) {
+                return 1
+            } else {
+                return 0
             }
             
-            return count
         }.reduce(0, +) // 일치하는 개수를 모두 더하여 반환한다.
     }
 }
 
+print("- solution(시간초과)")
 print(solution(["java backend junior pizza 150","python frontend senior chicken 210","python frontend senior chicken 150","cpp backend senior pizza 260","java backend junior chicken 80","python backend senior chicken 50"], ["java and backend and junior and pizza 100","python and frontend and senior and chicken 200","cpp and - and senior and pizza 250","- and backend and senior and - 150","- and - and - and chicken 100","- and - and - and - 150"])) // [1,1,1,1,2,4]
+
+
+// MARK: - 다른 방법의 풀이 (통과)
+// info의 언어, 직군, 경력, 소울푸드들의 모든 조합과 score를 저장하여 query에서 해당하는 내용만 검색하여 score의 숫자를 반환한다.
+// score를 filter로 검색하게 되면 solution과 다를게 없다.
+// score를 이진탐색을 이용해서 포함되는 개수만큼 반환하도록 했다. (이진탐색 필수 조건: 정렬이 되어있어야 한다.)
+func solution2(_ info:[String], _ query:[String]) -> [Int] {
+    var infos = info.reduce(into: [String:[Int]](), { result, str in
+        let values = str.components(separatedBy: " ")
+        let languages = [values[0], "-"]
+        let jobs = [values[1], "-"]
+        let careers = [values[2], "-"]
+        let soulFoods = [values[3], "-"]
+        let score = Int(values[4])!
+        
+        // "-"가 포함한 모든 경우의 수를 구하고, score를 저장한다.
+        for lan in languages {
+            for job in jobs {
+                for career in careers {
+                    for soulFood in soulFoods {
+                        let key = lan + job + career + soulFood
+                        
+                        if result[key] == nil {
+                            result[key] = [score]
+                        } else {
+                            result[key]!.append(score)
+                        }
+                    }
+                }
+            }
+        }
+    })
+    
+    // 이진탐색을 위한 오름차순 정렬
+    infos.forEach {
+        infos[$0] = $1.sorted()
+    }
+    
+    return query.map {
+        let values = $0.components(separatedBy: " ") //.filter { $0 != "and" }
+        let language = values[0]
+        let job = values[2]
+        let career = values[4]
+        let soulFood = values[6]
+        let score = Int(values[7])!
+        
+        let key = language + job + career + soulFood // 검색할 key
+        return binarySearch(target: score, infos[key]) // 저장된 score들을 target과 비교하여 이진탐색한다. (filter할 경우 시간초과가 발생한다. 그러므로 이진탐색으로 해당하는 index를 가지고 count를 센다.)
+    }
+}
+
+/// 이진탐색
+func binarySearch(target: Int, _ numbers:[Int]?) -> Int {
+    guard let nums = numbers else { return 0 }
+    var low = 0
+    var high = nums.count - 1
+
+    while low <= high {
+        let middle = (low + high) / 2
+        
+        if nums[middle] < target {
+            low = middle + 1
+        } else {
+            high = middle - 1
+        }
+    }
+    
+    return nums.count - low
+}
+
+print("\n\n- solution2 통과")
+print(solution2(["java backend junior pizza 150","python frontend senior chicken 210","python frontend senior chicken 150","cpp backend senior pizza 260","java backend junior chicken 80","python backend senior chicken 50"], ["java and backend and junior and pizza 100","python and frontend and senior and chicken 200","cpp and - and senior and pizza 250","- and backend and senior and - 150","- and - and - and chicken 100","- and - and - and - 150"])) // [1,1,1,1,2,4]
