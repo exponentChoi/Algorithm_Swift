@@ -58,7 +58,9 @@ func solution(_ m:Int, _ n:Int, _ board:[String]) -> Int {
     while true {
         for i in 1..<m {
             for j in 1..<n {
+                // 네모칸이 모두 동일한지 비교한다 또한 비어있는 값인지 확인한다.
                 if !boards[i][j].isEmpty && boards[i][j] == boards[i - 1][j] && boards[i][j] ==  boards[i][j - 1] && boards[i][j] == boards[i - 1][j - 1] {
+                    // 터진곳을 기록한다.
                     pang[i][j] = 1
                     pang[i][j - 1] = 1
                     pang[i - 1][j] = 1
@@ -73,18 +75,20 @@ func solution(_ m:Int, _ n:Int, _ board:[String]) -> Int {
         
         for i in 0..<m {
             for j in 0..<n {
+                // 터진 부분만 검사하여 기록한다.
                 if pang[i][j] == 1 {
+                    pang[i][j] = 0
                     answer += 1
+                    boards[i][j] = ""
                     
-                    if i > 0  {
-                        boards[i][j] = boards[i - 1][j]
-                        boards[i - 1][j] = ""
-                    } else {
-                        boards[i][j] = ""
+                    // 가장 아래부터 검사하여 블록을 한칸씩 아래로 떨어뜨린다.
+                    for sIndex in stride(from: m - 1, to: 0, by: -1) {
+                        if boards[sIndex][j] == "" {
+                            boards[sIndex][j] = boards[sIndex - 1][j]
+                            boards[sIndex - 1][j] = ""
+                        }
                     }
                 }
-                
-                pang[i][j] = 0
             }
         }
     }
