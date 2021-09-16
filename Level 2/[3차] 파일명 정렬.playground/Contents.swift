@@ -90,6 +90,7 @@ func solution(_ files:[String]) -> [String] {
     .map { files[$0] } // index를 files에 입력하여 순서대로 반환
 }
 
+print("solution 1")
 print(solution(["img12.png", "img10.png", "img02.png", "img1.png", "IMG01.GIF", "img2.JPG"])) // ["img1.png", "IMG01.GIF", "img02.png", "img2.JPG", "img10.png", "img12.png"]
 print(solution(["F-5 Freedom Fighter", "B-50 Superfortress", "A-10 Thunderbolt II", "F-14 Tomcat"])) // ["A-10 Thunderbolt II", "B-50 Superfortress", "F-5 Freedom Fighter", "F-14 Tomcat"]
 
@@ -98,3 +99,31 @@ print(solution(["F-5 Freedom Fighter", "B-50 Superfortress", "A-10 Thunderbolt I
 //
 //입력2: ["F-5 Freedom Fighter", "B-50 Superfortress", "A-10 Thunderbolt II", "F-14 Tomcat"]
 //출력2: ["A-10 Thunderbolt II", "B-50 Superfortress", "F-5 Freedom Fighter", "F-14 Tomcat"]
+
+
+// MARK: - 다른사람 문제 풀이
+extension String{
+    var head: String {
+        // prefix { Bool } -> Bool이 false 되기 전까지의 문자 반환 (prefix = 앞)
+        return self.prefix { !$0.isNumber }.uppercased() // 문자열 중 숫자가 아닌 앞자리 문자만 반환한다.
+    }
+    var number: Int {
+        return Int( self.drop   { !$0.isNumber } // 문자열 중 숫자가 아닌것을 제거한다.
+                        .prefix { $0.isNumber })! // 문자열 중 숫자로 이루어진 앞자리 문자만 반환한다.
+    }
+}
+
+func solution2(_ files:[String]) -> [String] {
+    
+    return files.enumerated().sorted { (lhs, rhs) in
+        let l = lhs.element
+        let r = rhs.element
+        if l.head != r.head { return l.head < r.head } // head가 다르면 head 오름차순으로 반환
+        if l.number != r.number { return l.number < r.number } // number가 다르다면 number 오름차순으로 반환
+        return lhs.offset < rhs.offset // 위 두가지에 걸리지 않는다면 offset 순서대로 반환
+    }.map{ $0.element }
+}
+
+print("\n\nsolution 2")
+print(solution2(["img12.png", "img10.png", "img02.png", "img1.png", "IMG01.GIF", "img2.JPG"])) // ["img1.png", "IMG01.GIF", "img02.png", "img2.JPG", "img10.png", "img12.png"]
+print(solution2(["F-5 Freedom Fighter", "B-50 Superfortress", "A-10 Thunderbolt II", "F-14 Tomcat"])) // ["A-10 Thunderbolt II", "B-50 Superfortress", "F-5 Freedom Fighter", "F-14 Tomcat"]
