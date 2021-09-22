@@ -48,26 +48,25 @@ func RGB거리2() {
         let d = dp[i - 1]
         
         if i == n - 1 {
-            dp[i][0] = (memories[0] == 1 ? d[2] : d[1]) + rgb[i][0]
-            dp[i][1] = (memories[1] == 0 ? d[2] : d[0]) + rgb[i][1]
-            dp[i][2] = (memories[2] == 0 ? d[1] : d[0]) + rgb[i][2]
+            dp[i][0] = min(d[1], d[2]) + (memories[0] == 1 ? rgb[i][2] : rgb[i][1])
+            dp[i][1] = min(d[0], d[2]) + (memories[1] == 0 ? rgb[i][2] : rgb[i][0])
+            dp[i][2] = min(d[0], d[1]) + (memories[2] == 0 ? rgb[i][1] : rgb[i][0])
             break
-        }
-        
-        if i == 1 {
-            let one = d[1] < d[2] ? 1 : 2
-            let two = d[0] < d[2] ? 0 : 2
-            let three = d[0] < d[1] ? 0 : 1
-            memories = [one, two, three]
         }
         
         dp[i][0] = min(d[1], d[2]) + rgb[i][0]
         dp[i][1] = min(d[0], d[2]) + rgb[i][1]
         dp[i][2] = min(d[0], d[1]) + rgb[i][2]
         
-        
+        if i == 1 {
+            let one = dp[1][0] - rgb[1][0] == d[1] ? 1 : 2
+            let two = dp[1][1] - rgb[1][1] == d[0] ? 0 : 2
+            let three = dp[1][2] - rgb[1][2] == d[1] ? 1 : 0
+            memories = [one, two, three]
+        }
     }
     
+    print(memories)
     print(rgb)
     print(dp)
     print(dp[n - 1].min()!)
