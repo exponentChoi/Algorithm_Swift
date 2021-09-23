@@ -33,41 +33,42 @@ import Foundation
 
 /// RGB거리 2
 func RGB거리2() {
-        let n = 3
-        let rgb = [[26, 40, 83], [49, 60, 57], [13, 89, 99]]
+//        let n = 3
+//        var rgb = [[26, 40, 83], [49, 60, 57], [13, 89, 99]]
     
-//    let n = Int(readLine()!)!
-//    let rgb = (0..<n).compactMap { _ in readLine()!.split(separator: " ").compactMap { Int($0) } }
+    let n = Int(readLine()!)!
+    var rgb = (0..<n).compactMap { _ in readLine()!.split(separator: " ").compactMap { Int($0) } }
+    rgb.insert([0, 0, 0], at: 0)
     
-    var memories = [Int]()
-    var dp = Array(repeating: [0, 0, 0], count: n)
-    dp[0] = rgb[0]
+    var answer = Int.max
+    var dp = [[Int]]()
     
-    
-    for i in 1..<n {
-        let d = dp[i - 1]
-        
-        if i == n - 1 {
-            dp[i][0] = min(d[1], d[2]) + (memories[0] == 1 ? rgb[i][2] : rgb[i][1])
-            dp[i][1] = min(d[0], d[2]) + (memories[1] == 0 ? rgb[i][2] : rgb[i][0])
-            dp[i][2] = min(d[0], d[1]) + (memories[2] == 0 ? rgb[i][1] : rgb[i][0])
-            break
-        }
-        
-        dp[i][0] = min(d[1], d[2]) + rgb[i][0]
-        dp[i][1] = min(d[0], d[2]) + rgb[i][1]
-        dp[i][2] = min(d[0], d[1]) + rgb[i][2]
-        
-        if i == 1 {
-            let one = dp[1][0] - rgb[1][0] == d[1] ? 1 : 2
-            let two = dp[1][1] - rgb[1][1] == d[0] ? 0 : 2
-            let three = dp[1][2] - rgb[1][2] == d[1] ? 1 : 0
-            memories = [one, two, three]
+    let memories = rgb[1]
+    let max = Int.max - 1000
+
+    func setDP() {
+        dp = Array(repeating: [0, 0, 0], count: n + 1)
+        for i in 1...n {
+            dp[i][0] = rgb[i][0] + min(dp[i - 1][1], dp[i - 1][2])
+            dp[i][1] = rgb[i][1] + min(dp[i - 1][0], dp[i - 1][2])
+            dp[i][2] = rgb[i][2] + min(dp[i - 1][0], dp[i - 1][1])
         }
     }
+
+    rgb[1] = [memories[0], max, max]
+    setDP()
+    answer = min(min(dp[n][1],dp[n][2]),answer)
+
+    rgb[1] = [max, memories[1], max]
+    setDP()
+    answer = min(min(dp[n][0], dp[n][2]), answer)
+
+    rgb[1] = [max, max, memories[2]]
+    setDP()
+    answer = min(min(dp[n][1], dp[n][0]), answer)
     
-    print(memories)
-    print(rgb)
-    print(dp)
-    print(dp[n - 1].min()!)
+    print(answer)
 }
+
+
+
