@@ -40,12 +40,13 @@ func RGB거리2() {
     var rgb = (0..<n).compactMap { _ in readLine()!.split(separator: " ").compactMap { Int($0) } }
     rgb.insert([0, 0, 0], at: 0)
     
-    var answer = Int.max
+    var answer = Int.max // 최솟값을 저장하기 위한 변수 (최대값으로 초기화 후 작은값이 등장하면 교체한다.)
     var dp = [[Int]]()
     
-    let memories = rgb[1]
+    let memories = rgb[1] // 첫 선택에서 색상을 기억하기 위함
     let max = Int.max - 1000
 
+    // 첫 번째를 선택한 후 나머지의 경우의 수를 구한다.
     func setDP() {
         dp = Array(repeating: [0, 0, 0], count: n + 1)
         for i in 1...n {
@@ -55,17 +56,17 @@ func RGB거리2() {
         }
     }
 
-    rgb[1] = [memories[0], max, max]
+    rgb[1] = [memories[0], max, max] // 첫 선택이 빨강이 선택된 경우
     setDP()
-    answer = min(min(dp[n][1],dp[n][2]),answer)
+    answer = min(min(dp[n][1], dp[n][2]), answer) // 최소값 저장
 
-    rgb[1] = [max, memories[1], max]
+    rgb[1] = [max, memories[1], max] // 첫 선택이 초록이 선택된 경우
     setDP()
-    answer = min(min(dp[n][0], dp[n][2]), answer)
+    answer = min(min(dp[n][0], dp[n][2]), answer) // 최소값 저장
 
-    rgb[1] = [max, max, memories[2]]
+    rgb[1] = [max, max, memories[2]] // 첫 선택이 파랑인 경우
     setDP()
-    answer = min(min(dp[n][1], dp[n][0]), answer)
+    answer = min(min(dp[n][1], dp[n][0]), answer) // 최소값 저장
     
     print(answer)
 }
