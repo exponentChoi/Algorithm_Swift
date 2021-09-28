@@ -34,11 +34,11 @@ func 거스름돈() {
     let coin = [500, 100, 50, 10, 5, 1] // 동전 거스름돈
     var count = 0
     
-    for i in coin.indices {
+    for c in coin {
         if money == 0 { break }
         
-        count += money / coin[i]
-        money -= (money / coin[i]) * coin[i]
+        count += money / c
+        money -= (money / c) * c
     }
     
     print(count)
