@@ -24,10 +24,22 @@
 
 import Foundation
 
+// MARK: - Set을 이용한 풀이
 func solution(_ numbers:[Int]) -> Int {
     let all: Set = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     return all.subtracting(Set(numbers)).reduce(0, +) // 차집함 이용 (all 차 numbers)
 }
 
+print("- solution 1")
 print(solution([1,2,3,4,6,7,8,0])) // 14
 print(solution([5,8,4,0,6,7,9])) // 6
+
+
+// MARK: - 다른 방식의 접근
+func solution2(_ numbers:[Int]) -> Int {
+    return 45 - numbers.reduce(0, +) // (0...9)를 더한 45에서 numbers의 숫자만큼 빼주면 끝
+}
+
+print("\n\n- solution 2")
+print(solution2([1,2,3,4,6,7,8,0])) // 14
+print(solution2([5,8,4,0,6,7,9])) // 6
