@@ -26,8 +26,7 @@ import Foundation
 
 // MARK: - Set을 이용한 풀이
 func solution(_ numbers:[Int]) -> Int {
-    let all: Set = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    return all.subtracting(Set(numbers)).reduce(0, +) // 차집함 이용 (all 차 numbers)
+    return Set(0...9).subtracting(Set(numbers)).reduce(0, +) // 차집함 이용 (all 차 numbers)
 }
 
 print("- solution 1")
