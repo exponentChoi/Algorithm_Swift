@@ -65,15 +65,21 @@ func solution(_ weights:[Int], _ head2head:[String]) -> [Int] {
     struct Score {
         let seq: Int // 선수 번호
         let weight: Int // 몸무게
-        var winRate: Double // 승률
+        var winRate: Float = 0 // 승률
         var heavyWinCount: Int = 0 // 자신보다 무거운 상대를 이긴 횟수
         
         init(seq: Int, weight: Int, total: String, playerWeight:[Int]) {
             self.seq = seq
             self.weight = weight
-            var win: Double = 0.0
+            var win: Float = 0.0
+            var matchCount: Float = 0.0
             
             for t in total.enumerated() {
+                if t.offset == seq - 1 { continue } // 본인 경기
+                if t.element == "N" { continue } // N인 경우 패스
+                
+                matchCount += 1 // 경기진행 수 저장
+                
                 if t.element == "W" { // 승리한 경우
                     win += 1
                     
@@ -83,7 +89,9 @@ func solution(_ weights:[Int], _ head2head:[String]) -> [Int] {
                 }
             }
             
-            self.winRate = win / Double(total.count) // 승률 저장
+            // MARK: - 중요 포인트 !!!!
+            let rate = win / matchCount // N이 아닌 경우만을 가지고 승률 계산을 해야한다.
+            self.winRate = rate > 0.0 ? rate : 0.0 // 0.0보다 큰 경우만 저장하고 아니면 0.0을 저장한다.
         }
     }
     
@@ -107,7 +115,7 @@ func solution(_ weights:[Int], _ head2head:[String]) -> [Int] {
             return a.heavyWinCount > b.heavyWinCount
         } else if a.weight != b.weight { // 몸무게 순서로 정렬
             return a.weight > b.weight
-        } else { // 번호가 낮은대로 정렬
+        } else { // 번호가 낮은 순서로 정렬
             return a.seq < b.seq
         }
     }).map { $0.seq }
