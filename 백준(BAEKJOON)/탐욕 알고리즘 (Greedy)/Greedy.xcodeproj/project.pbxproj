@@ -13,6 +13,7 @@
 		7C5DA842270049F500FB6A6D /* 세탁소 사장 동혁.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5DA841270049F500FB6A6D /* 세탁소 사장 동혁.swift */; };
 		7C5DA84427006C2F00FB6A6D /* ATM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5DA84327006C2F00FB6A6D /* ATM.swift */; };
 		7CAA64212708949000E21E9C /* 이장님 초대.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAA64202708949000E21E9C /* 이장님 초대.swift */; };
+		7CAA642327089FDC00E21E9C /* ZOAC 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAA642227089FDC00E21E9C /* ZOAC 2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,6 +36,7 @@
 		7C5DA841270049F500FB6A6D /* 세탁소 사장 동혁.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "세탁소 사장 동혁.swift"; sourceTree = "<group>"; };
 		7C5DA84327006C2F00FB6A6D /* ATM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATM.swift; sourceTree = "<group>"; };
 		7CAA64202708949000E21E9C /* 이장님 초대.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "이장님 초대.swift"; sourceTree = "<group>"; };
+		7CAA642227089FDC00E21E9C /* ZOAC 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZOAC 2.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				7C101B9D2701FAD900EEB0B7 /* 거스름돈.swift */,
 				7C101B9F2701FCD600EEB0B7 /* 전자레인지.swift */,
 				7CAA64202708949000E21E9C /* 이장님 초대.swift */,
+				7CAA642227089FDC00E21E9C /* ZOAC 2.swift */,
 			);
 			path = Greedy;
 			sourceTree = "<group>";
@@ -136,6 +139,7 @@
 			files = (
 				7C101BA02701FCD600EEB0B7 /* 전자레인지.swift in Sources */,
 				7C5DA84427006C2F00FB6A6D /* ATM.swift in Sources */,
+				7CAA642327089FDC00E21E9C /* ZOAC 2.swift in Sources */,
 				7C5DA83B2700498800FB6A6D /* main.swift in Sources */,
 				7C101B9E2701FAD900EEB0B7 /* 거스름돈.swift in Sources */,
 				7C5DA842270049F500FB6A6D /* 세탁소 사장 동혁.swift in Sources */,
