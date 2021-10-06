@@ -16,6 +16,7 @@
 		7CAA642327089FDC00E21E9C /* ZOAC 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAA642227089FDC00E21E9C /* ZOAC 2.swift */; };
 		7CAA6432270B090900E21E9C /* 카우버거.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAA6431270B090900E21E9C /* 카우버거.swift */; };
 		7CAA6434270B0F6800E21E9C /* 스네이크버드.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAA6433270B0F6800E21E9C /* 스네이크버드.swift */; };
+		7CAA6436270BE3A700E21E9C /* 슬라임 합치기.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CAA6435270BE3A700E21E9C /* 슬라임 합치기.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,6 +42,7 @@
 		7CAA642227089FDC00E21E9C /* ZOAC 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ZOAC 2.swift"; sourceTree = "<group>"; };
 		7CAA6431270B090900E21E9C /* 카우버거.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "카우버거.swift"; sourceTree = "<group>"; };
 		7CAA6433270B0F6800E21E9C /* 스네이크버드.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "스네이크버드.swift"; sourceTree = "<group>"; };
+		7CAA6435270BE3A700E21E9C /* 슬라임 합치기.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "슬라임 합치기.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 				7CAA642227089FDC00E21E9C /* ZOAC 2.swift */,
 				7CAA6431270B090900E21E9C /* 카우버거.swift */,
 				7CAA6433270B0F6800E21E9C /* 스네이크버드.swift */,
+				7CAA6435270BE3A700E21E9C /* 슬라임 합치기.swift */,
 			);
 			path = Greedy;
 			sourceTree = "<group>";
@@ -151,6 +154,7 @@
 				7C101B9E2701FAD900EEB0B7 /* 거스름돈.swift in Sources */,
 				7C5DA842270049F500FB6A6D /* 세탁소 사장 동혁.swift in Sources */,
 				7CAA64212708949000E21E9C /* 이장님 초대.swift in Sources */,
+				7CAA6436270BE3A700E21E9C /* 슬라임 합치기.swift in Sources */,
 				7CAA6434270B0F6800E21E9C /* 스네이크버드.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
