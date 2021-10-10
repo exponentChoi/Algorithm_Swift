@@ -30,24 +30,24 @@
 import Foundation
 
 func solution(_ s:String) -> Int{
-    let array = ["aa", "bb", "cc", "dd", "ee", "ff", "gg", "hh", "ii", "jj", "kk", "ll", "mm", "nn", "oo", "pp", "qq", "rr", "ss", "tt", "uu", "vv", "ww", "xx", "yy", "zz"]
-    var str = s
-    var answer = 1
+    var stack = [Character]()
     
-    while !str.isEmpty {
-        let filering = array.filter({ str.contains($0) })
-        if !filering.isEmpty {
-            filering.forEach {
-                str = str.replacingOccurrences(of: $0, with: "")
-            }
+    for c in s {
+        if stack.isEmpty {
+            stack.append(c)
         } else {
-            answer = 0
-            break
+            if stack.last! == c { // 마지막에 저장한 값과 현재 값이 같으면 추가하지 않고 삭제한다.
+                stack.removeLast()
+            } else {
+                stack.append(c)
+            }
         }
     }
     
-    return answer
+    // 스택이 비어있으면 전부 제거완료
+    return stack.isEmpty ? 1 : 0
 }
 
 print(solution("baabaa")) // 1
 print(solution("cdcd")) // 0
+print(solution("abccaeeaba")) // 1
