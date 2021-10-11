@@ -33,7 +33,7 @@
 import Foundation
 
 func solution(_ skill:String, _ skill_trees:[String]) -> Int {
-    let flow = Array(skill)
+    let seq = Array(skill)
     var answer = skill_trees.count
     
     skill_trees.forEach {
@@ -42,20 +42,20 @@ func solution(_ skill:String, _ skill_trees:[String]) -> Int {
         
         for i in skill_tree.indices {
             let s = skill_tree[i]
-            if flow.contains(s) {
-                let flowIndex = flow.firstIndex(of: s)!
+            if seq.contains(s) {
+                let seqIndex = seq.firstIndex(of: s)!
                 
-                if index == -1 && flowIndex != 0 { // 스킬 배우기가 처음인데, 스킬 베우는 순서중 첫 번째가 아닌 경우
+                if index == -1 && seqIndex != 0 { // 스킬 배우기가 처음인데, 스킬 베우는 순서중 첫 번째가 아닌 경우
                     answer -= 1
                     break
-                } else if flowIndex < index { // 배우려는 스킬이 스킬 배우는 순서보다 앞인 경우
+                } else if seqIndex < index { // 배우려는 스킬이 스킬 배우는 순서보다 앞인 경우
                     answer -= 1
                     break
-                } else if abs(index - flowIndex) != 1 { // 배우려는 스킬이 중간과정을 건너 뛴 경우
+                } else if abs(index - seqIndex) != 1 { // 배우려는 스킬이 중간과정을 건너 뛴 경우
                     answer -= 1
                     break
                 } else {
-                    index = flowIndex
+                    index = seqIndex
                 }
             }
         }
@@ -64,5 +64,27 @@ func solution(_ skill:String, _ skill_trees:[String]) -> Int {
     return answer
 }
 
+print("- solution")
 print(solution("CBD", ["BACDE", "CBADF", "AECB", "BDA"])) // 2
 print(solution("CBD", ["CED"])) // 0
+
+
+// MARK: - 다른사람 문제 풀이
+func solution2(_ skill:String, _ skill_trees:[String]) -> Int {
+    func available(_ s: String, _ t: String) -> Bool {
+        let alza = t.filter { s.contains($0) } // skill에 포함된 skill_trees만 필터링한다.
+        
+        // starts: 시퀀스의 초기 요소가 다른 시퀀스의 요소와 동일한지 여부를 나타내는 부울 값을 반환합니다. (Apple 공식문서)
+        // example: (시퀀스).starts(with: (비교할 대상))
+        // (1...10).starts(with: (1...3)) // true
+        // (1...5).starts(with: (2...5))  // false
+        // (1...5).starts(with: (1...8))  // false
+        return s.starts(with: alza)
+    }
+
+    return skill_trees.map { available(skill, $0) }.filter { $0 }.count
+}
+
+print("\n- solution2")
+print(solution2("CBD", ["BACDE", "CBADF", "AECB", "BDA"])) // 2
+print(solution2("CBD", ["CED"])) // 0
