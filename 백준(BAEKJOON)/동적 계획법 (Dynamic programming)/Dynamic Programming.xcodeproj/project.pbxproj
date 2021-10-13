@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C3BAA522715B58600FA966C /* 카드 구매하기.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3BAA512715B58600FA966C /* 카드 구매하기.swift */; };
 		7C4BA07E26F36A110044E1A2 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4BA07D26F36A110044E1A2 /* main.swift */; };
 		7C4BA09826F36AA80044E1A2 /* 1로 만들기.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4BA09726F36AA80044E1A2 /* 1로 만들기.swift */; };
 		7C4BA09A26F36DC30044E1A2 /* 설탕 배달.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4BA09926F36DC30044E1A2 /* 설탕 배달.swift */; };
@@ -35,6 +36,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7C3BAA512715B58600FA966C /* 카드 구매하기.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "카드 구매하기.swift"; sourceTree = "<group>"; };
 		7C4BA07A26F36A110044E1A2 /* Dynamic Programming */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Dynamic Programming"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C4BA07D26F36A110044E1A2 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		7C4BA09726F36AA80044E1A2 /* 1로 만들기.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "1로 만들기.swift"; path = "../../동적 계획법 (Dynamic Programming)/Dynamic Programming/1로 만들기.swift"; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				7CCD74B126F8BF5C004713FE /* 가장 긴 증가하는 부분 수열.swift */,
 				7CCD74B326F8D861004713FE /* 피보나치 수 2.swift */,
 				7C5DA82C26FF657900FB6A6D /* 포도주 시식.swift */,
+				7C3BAA512715B58600FA966C /* 카드 구매하기.swift */,
 			);
 			path = "Dynamic Programming";
 			sourceTree = "<group>";
@@ -168,6 +171,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C3BAA522715B58600FA966C /* 카드 구매하기.swift in Sources */,
 				7C4BA09A26F36DC30044E1A2 /* 설탕 배달.swift in Sources */,
 				7C4BA09C26F3776C0044E1A2 /* 1, 2, 3 더하기.swift in Sources */,
 				7CCD74B626FB5008004713FE /* RGB거리 2.swift in Sources */,
