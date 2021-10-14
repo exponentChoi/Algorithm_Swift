@@ -91,11 +91,14 @@ func 카드구매하기() {
     dp[0] = cardPack[0] // 첫 번째 값 저장
     
     for i in 1..<cardPack.count {
-        // 1. 각 개수마다 가장 큰 수를 dp에 저장
-        // 2. i번째와 ((i-1) + 첫 번째 값)를 비교하여 큰 숫자를 dp[i]에 저장한다.
-        dp[i] = max(dp[i - 1] + dp[0], cardPack[i])
+        for j in 1...i {
+            // 각 개수마다 가장 큰 값을 dp에 저장한다.
+            // dp[i - j] + cardPack[j - 1] = 구할 수 있는 경우의 수 조합
+            // 4번째를 구한다고 가정하면 (1번 4개), (2번 2개), (2번 1개 + 1번 2개), (3번 1개 + 1번 1개)를 비교한다.
+            dp[i] = max(dp[i], cardPack[i], dp[i - j] + cardPack[j - 1])
+        }
     }
     
-//    print(dp)
     print(dp[n - 1])
 }
+
