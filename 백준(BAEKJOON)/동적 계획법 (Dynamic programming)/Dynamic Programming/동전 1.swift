@@ -15,7 +15,7 @@
  첫째 줄에 n, k가 주어진다. (1 ≤ n ≤ 100, 1 ≤ k ≤ 10,000) 다음 n개의 줄에는 각각의 동전의 가치가 주어진다. 동전의 가치는 100,000보다 작거나 같은 자연수이다.
 
  [출력]
- 첫째 줄에 경우의 수를 출력한다. 경우의 수는 231보다 작다.
+ 첫째 줄에 경우의 수를 출력한다. 경우의 수는 2의 31제곱보다 작다.
 
  [예제 입력 1]
  3 10
@@ -30,23 +30,24 @@ import Foundation
 /// 동전 1 [2293번]
 func 동전1() {
     let input = readLine()!.split(separator: " ").compactMap { Int($0) }
-    let n = input[0]
-    let k = input[1]
-    let coins = (0..<n).compactMap { _ in Int(readLine()!) }
+    let n = input[0] // 동전의 개수
+    let k = input[1] // 구해야 할 합
+    let coins = (0..<n).compactMap { _ in Int(readLine()!) } // 동전 배열
     
-    var dp = Array(repeating: 0, count: k + 1)
+    var dp = Array(repeating: 0, count: k + 1) // 각 구해야할 합에대한 모든 경우의수를 저장한다.
     dp[0] = 1
     
-    for coin in coins{
-        for j in 1...k {
-            if coin <= j {
-                dp[j] += dp[j - coin]
-                if dp[j] > Int(pow(2.0, 31.0)){
+    for coin in coins { // 동전 개수만큼
+        for j in 1...k { // 합을 구할 때 까지
+            if coin <= j { // 동전의 가치가 합보다 작거나 같은경우
+                dp[j] += dp[j - coin] // dp[j]에 j에서 동전의 가치를 뺀 값을 저장한다.
+                
+                if dp[j] > Int(pow(2.0, 31.0)) { // 2의 31제곱보다 크다면 0으로 만든다.
                     dp[j] = 0
                 }
             }
         }
     }
     
-    print(dp[k - 1])
+    print(dp[k]) // k번째 경우의수를 추출한다.
 }
