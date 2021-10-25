@@ -34,15 +34,33 @@
 import Foundation
 
 func solution(_ n:Int, _ left:Int64, _ right:Int64) -> [Int] {
-    var board = Array(repeating: Array(repeating: 1, count: n), count: n)
     
-    for i in 0..<n {
-        for j in 0..<n {
-            board[i][j] += j > i ? j : i
-        }
-    }
     
-    return board.flatMap { $0 }[Int(left)...Int(right)].map { Int($0) }
+    // 시간초과 발생함.. 2차원 배열 생성 후 추출하면 n = 10^7까지 나온다.(효율성 0점)
+    /*
+     var board = Array(repeating: Array(repeating: 1, count: n), count: n)
+     
+     for i in 0..<n {
+         for j in 0..<n {
+             board[i][j] += j > i ? j : i
+         }
+     }
+     
+     return board.flatMap { $0 }[Int(left)...Int(right)].map { Int($0) }
+     */
+    
+    // 배열 규칙
+    // [1, 2, 3, 4, 5, 6 ..]
+    // [2, 2, 3, 4, 5, 6 ..]
+    // [3, 3, 3, 4, 5, 6 ..]
+    // [4, 4, 4, 4, 5, 6 ..]
+    // [5, 5, 5, 5, 5, 6 ..]
+    // [6, 6, 6, 6, 6, 6 ..]
+    //
+    // 위치를 i라고 할 때 i를 n으로 나누면 i에 해당하는 행과 열을 구할 수 있다.
+    // - 예를들어 [6, 10, 10]를 받았을 때
+    // 10 / 6 => 1 나머지 4가 나오는데, max(1, 4) + 1을 하면 해당하는 행열의 값을 구할 수 있다.
+    return (Int(left)...Int(right)).map { max($0 / n, $0 % n) + 1 }
 }
 
 print(solution(3, 2, 5)) // [3,2,2,3]
