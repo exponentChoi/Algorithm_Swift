@@ -40,17 +40,33 @@ import Foundation
 
 /// 연속합 [1912번]
 func 연속합() {
+    /* 시간초과 발생
     let _ = readLine()
     let numbers = readLine()!.split(separator: " ").compactMap { Int($0) }
     var maxNumber = Int.min
-    
+     
     for i in numbers.indices {
         for j in i..<numbers.count {
             maxNumber = max(maxNumber, numbers[i...j].reduce(0, +))
         }
     }
+     
+    print(maxNumber)
+    */
+    
+    let _ = readLine()
+    let numbers = readLine()!.split(separator: " ").compactMap { Int($0) }
+    var maxNumber = numbers.max()!
+    var sum = 0
+    
+    for number in numbers {
+        sum += number
+        sum = max(sum, number) // 저장된 숫자들과 현재 숫자를 비교하여 큰 값을 저장한다.
+        maxNumber = max(sum, maxNumber) // 최초의 max값과 더해진 숫자들을 비교하여 큰값을 저장한다.
+    }
     
     print(maxNumber)
 }
+
 
 
