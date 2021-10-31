@@ -46,12 +46,12 @@ func 정수삼각형() {
     
     // 삼각형 각 숫자에 숫자(위에 있는 숫자)를 더하는 방식.
     for i in 1..<n {
-        for j in 0...i { // 맨 왼쪽, 인덱스가 0일 때
-            if j == 0 {
+        for j in 0...i {
+            if j == 0 { // 맨 왼쪽, 인덱스가 0일 때
                 numbers[i][j] += numbers[i - 1][j]
             } else if j == i { // 맨 오른쪽, 인덱스가 i(끝일 때)
                 numbers[i][j] += numbers[i - 1][j - 1]
-            } else { // 그 외의 경우 맨 왼쪽가 맨 오른쪽 사이
+            } else { // 그 외의 경우 맨 왼쪽과 맨 오른쪽 사이
                 numbers[i][j] += max(numbers[i - 1][j], numbers[i - 1][j - 1])
             }
         }
