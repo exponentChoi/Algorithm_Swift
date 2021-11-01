@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7C07491C272D771A0077BA3E /* 정수 삼각형.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C07491B272D771A0077BA3E /* 정수 삼각형.swift */; };
 		7C07491E272EC05C0077BA3E /* 가장 긴 감소하는 부분 수열.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C07491D272EC05C0077BA3E /* 가장 긴 감소하는 부분 수열.swift */; };
+		7C074920272F83BB0077BA3E /* 이동하기.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C07491F272F83BB0077BA3E /* 이동하기.swift */; };
 		7C3BAA522715B58600FA966C /* 카드 구매하기.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3BAA512715B58600FA966C /* 카드 구매하기.swift */; };
 		7C4BA07E26F36A110044E1A2 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4BA07D26F36A110044E1A2 /* main.swift */; };
 		7C4BA09826F36AA80044E1A2 /* 1로 만들기.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4BA09726F36AA80044E1A2 /* 1로 만들기.swift */; };
@@ -44,6 +45,7 @@
 /* Begin PBXFileReference section */
 		7C07491B272D771A0077BA3E /* 정수 삼각형.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "정수 삼각형.swift"; sourceTree = "<group>"; };
 		7C07491D272EC05C0077BA3E /* 가장 긴 감소하는 부분 수열.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "가장 긴 감소하는 부분 수열.swift"; sourceTree = "<group>"; };
+		7C07491F272F83BB0077BA3E /* 이동하기.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "이동하기.swift"; sourceTree = "<group>"; };
 		7C3BAA512715B58600FA966C /* 카드 구매하기.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "카드 구매하기.swift"; sourceTree = "<group>"; };
 		7C4BA07A26F36A110044E1A2 /* Dynamic Programming */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Dynamic Programming"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C4BA07D26F36A110044E1A2 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				7C82D0472727F62000C90F9C /* 돌 게임 2.swift */,
 				7C82D0492728EB1000C90F9C /* 연속합.swift */,
 				7C07491B272D771A0077BA3E /* 정수 삼각형.swift */,
+				7C07491F272F83BB0077BA3E /* 이동하기.swift */,
 			);
 			path = "Dynamic Programming";
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 				7CCD74B226F8BF5C004713FE /* 가장 긴 증가하는 부분 수열.swift in Sources */,
 				7C4BA07E26F36A110044E1A2 /* main.swift in Sources */,
 				7CCD74A726F60E32004713FE /* 피보나치 수 5.swift in Sources */,
+				7C074920272F83BB0077BA3E /* 이동하기.swift in Sources */,
 				7CCD74A926F61042004713FE /* 2×n 타일링.swift in Sources */,
 				7C5DA82D26FF657900FB6A6D /* 포도주 시식.swift in Sources */,
 				7CCD74A526F5FE3D004713FE /* 피보나치 함수.swift in Sources */,
