@@ -34,6 +34,7 @@
 		7CCD74B226F8BF5C004713FE /* 가장 긴 증가하는 부분 수열.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD74B126F8BF5C004713FE /* 가장 긴 증가하는 부분 수열.swift */; };
 		7CCD74B426F8D861004713FE /* 피보나치 수 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD74B326F8D861004713FE /* 피보나치 수 2.swift */; };
 		7CCD74B626FB5008004713FE /* RGB거리 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD74B526FB5008004713FE /* RGB거리 2.swift */; };
+		7CDCA835273B5FB90081FD45 /* 상자넣기.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDCA834273B5FB90081FD45 /* 상자넣기.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -79,6 +80,7 @@
 		7CCD74B126F8BF5C004713FE /* 가장 긴 증가하는 부분 수열.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "가장 긴 증가하는 부분 수열.swift"; sourceTree = "<group>"; };
 		7CCD74B326F8D861004713FE /* 피보나치 수 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "피보나치 수 2.swift"; sourceTree = "<group>"; };
 		7CCD74B526FB5008004713FE /* RGB거리 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RGB거리 2.swift"; sourceTree = "<group>"; };
+		7CDCA834273B5FB90081FD45 /* 상자넣기.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "상자넣기.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 				7CB289272735FE4D002DB8B3 /* 퇴사.swift */,
 				7CB289292737B648002DB8B3 /* 쉬운 계단 수.swift */,
 				7CB2892D2738BBA4002DB8B3 /* 오르막 수.swift */,
+				7CDCA834273B5FB90081FD45 /* 상자넣기.swift */,
 			);
 			path = "Dynamic Programming";
 			sourceTree = "<group>";
@@ -222,6 +225,7 @@
 				7CB2892A2737B648002DB8B3 /* 쉬운 계단 수.swift in Sources */,
 				7CCD74AD26F70A90004713FE /* 계단 오르기.swift in Sources */,
 				7CCD74AB26F615A0004713FE /* RGB거리.swift in Sources */,
+				7CDCA835273B5FB90081FD45 /* 상자넣기.swift in Sources */,
 				7CB289282735FE4D002DB8B3 /* 퇴사.swift in Sources */,
 				7C16224B2734175D003C07A6 /* 합분해.swift in Sources */,
 				7C4BA09826F36AA80044E1A2 /* 1로 만들기.swift in Sources */,
