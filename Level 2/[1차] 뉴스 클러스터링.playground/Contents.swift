@@ -42,45 +42,49 @@
 import UIKit
 
 func solution(_ str1:String, _ str2:String) -> Int {
+    let lowerStr1 = str1.lowercased().map { $0 }
+    let lowerStr2 = str2.lowercased().map { $0 }
     var a = [String]()
     var b = [String]()
-    
-    for (strA, strB) in zip(str1, str2) {
-        if strA.isLetter {
-            let lowerA = String(strA).lowercased()
-            if !a.isEmpty && a.last?.count != 2 {
-                a[a.count - 1] += lowerA
-            }
-            
-            a.append(lowerA)
-        }
-        
-        if strB.isLetter {
-            let lowerB = String(strB).lowercased()
-            if !b.isEmpty && b.last?.count != 2 {
-                b[b.count - 1] += lowerB
-            }
-            
-            b.append(lowerB)
-        }
-    }
-    
-    if a.last?.count == 1 {
-        a.removeLast()
-    }
-    
-    if b.last?.count == 1 {
-        b.removeLast()
-    }
-    
-    let intersection = Set(a).intersection(Set(b)) // 교집합
-    let union = Set(a).union(Set(b)) // 합집합
-    
-    let intersectionCount = CGFloat(intersection.count) // 교집합 개수
-    let unionCount = CGFloat(union.count) // 합집합 개수
-    let answer = floor((intersectionCount / unionCount) * 65536)
+    var intersction = [String]()
 
-    return Int(answer)
+    for i in 0..<lowerStr1.count - 1 {
+        let letter = letter(lowerStr1[i], lowerStr1[i + 1])
+        let isLetter = letter.0
+        let str = letter.1
+        if isLetter { // 문자열인 경우
+            a.append(str)
+        }
+    }
+
+    for i in 0..<lowerStr2.count - 1 {
+        let letter = letter(lowerStr2[i], lowerStr2[i + 1])
+        let isLetter = letter.0
+        let str = letter.1
+        
+        if isLetter { // 문자열인 경우
+            if a.contains(str) { // A에 같은 문자열이 존재하는 경우
+                intersction.append(str) // 교집합 변수에 추가
+                a.remove(at: a.firstIndex(of: str)!) // 교집합에 해당한것 제거 (중복으로 세는것을 방지)
+            } else {
+                b.append(str) // 교집합이 아닌 경우 B에 문자열 추가
+            }
+        }
+    }
+
+    let union = a + b + intersction // 합집합
+    let result = (Double(intersction.count) / Double(union.count)) * 65536
+
+    // 공집합인 경우 65536 반환
+    return a.isEmpty && b.isEmpty ? 65536 : Int(result)
+}
+
+func letter(_ a: Character, _ b: Character) -> (Bool, String) {
+    if a.isLetter && b.isLetter {
+        return (true, a.description + b.description)
+    } else {
+        return (false, "")
+    }
 }
 
 print(solution("FRANCE", "french")) // 16384
