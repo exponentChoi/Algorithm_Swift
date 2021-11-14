@@ -15,17 +15,38 @@
  [[2, 3, 2], [4, 2, 4], [3, 1, 4]]       [[5, 4, 3], [2, 4, 1], [3, 1, 1]]      [[22, 22, 11], [36, 28, 18], [29, 20, 14]]
  */
 
+/**
+문제 해설자체가 어렵다..
+ 
+ [[A1,A2]], [B1, B2], [C1, C2]]    [[a1, a2], [b1, b2]] 가 주어졌을 때
+ A1 자리에는 (A1 * a1 + A2 * b1)
+ A2 자리에는 (A1 * a2 + A2 * b2)
+ B1 자리에는 (B1 * a1 + B2 * b1)
+ B2 자리에는 (B1 * a2 + B2 * b2)
+ 
+ 이런식으로 들어간다.. 알고 봐도 헷갈린다..
+ 필기하면서 스스로 이해하고 규칙을 찾아서 반복문을 작성하는 힘을 기르자!!
+ */
+
 import Foundation
 
 func solution(_ arr1:[[Int]], _ arr2:[[Int]]) -> [[Int]] {
-    var answer = Array(repeating: Array(repeating: 0, count: arr1.first?.count ?? 0), count: arr1.count)
+    var answer = [[Int]]()
     
     for i in arr1.indices {
+        var temp = [Int]()
+        
         for j in arr2[0].indices {
+            var sum = 0
+            
             for k in arr1[0].indices {
-                answer[i][j] += arr1[i][k] * arr2[k][j]
+                sum += arr1[i][k] * arr2[k][j]
             }
+            
+            temp.append(sum)
         }
+        
+        answer.append(temp)
     }
     
     return answer
