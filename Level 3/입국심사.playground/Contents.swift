@@ -90,5 +90,38 @@ func solution(_ n:Int, _ times:[Int]) -> Int64 {
     return binarySearch(start: min, end: max)
 }
 
+print("- solution 1")
 print(solution(6, [7, 10])) // 28
 print(solution(3, [1, 1, 2])) // 2
+
+
+
+func solution2(_ n:Int, _ times:[Int]) -> Int64 {
+    guard let maxInTimes = times.max() else { return 0 }
+
+    var left: Int64 = 0 // 최소값
+    var right: Int64 = Int64(maxInTimes * n) // 최대값
+    var mid: Int64 = (left + right) / 2 // 중간값
+    var answer: Int64 = right
+
+    while left <= right {
+        mid = (left + right) / 2
+        var possible: Int64 = 0
+        for time in times {
+            possible = possible + Int64((Int(mid) / time))
+        }
+        // n보다 작을 경우 해당 mid 값 보단 더 커야한다.
+        if possible >= n {
+            answer = mid
+            right = mid - 1
+        } else {
+            left = mid + 1
+        }
+    }
+
+    return answer
+}
+
+print("\n- solution 2")
+print(solution2(6, [7, 10])) // 28
+print(solution2(3, [1, 1, 2])) // 2
