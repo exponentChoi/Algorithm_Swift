@@ -112,8 +112,12 @@ func solution(_ n:Int, _ k:Int, _ cmd:[String]) -> String {
     
     func arrangeSelected() {
         if selected >= n {
-            selected = tables.last! == "X" ? n - 2 : n - 1
-            
+            for i in stride(from: n - 1, through: 0, by: -1) {
+                if tables[i] == "O" {
+                    selected = i + 1
+                    break
+                }
+            }
         } else if selected < 0 { selected = 0 }
     }
     
