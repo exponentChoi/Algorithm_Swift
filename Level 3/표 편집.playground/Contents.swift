@@ -164,5 +164,60 @@ func solution(_ n:Int, _ k:Int, _ cmd:[String]) -> String {
     return tables.joined()
 }
 
+print("- solution 1")
 print(solution(8, 2, ["D 2","C","U 3","C","D 4","C","U 2","Z","Z"])) // "OOOOXOOO"
 print(solution(8, 2, ["D 2","C","U 3","C","D 4","C","U 2","Z","Z","U 1","C"])) // "OOXOXOOO
+
+
+// 출처 - https://velog.io/@torch-ray/table
+func solution2(_ n:Int, _ k:Int, _ cmd:[String]) -> String {
+    var res = [String](repeating: "O", count: n)
+        var deleted: [Int] = []
+        var prev: [Int] = []
+        var next: [Int] = []
+        var k = k
+
+        for i in 0..<n+2 {
+            prev.append(i-1)
+            next.append(i+1)
+        }
+        k+=1
+
+        for c in cmd {
+            let command = c.split{$0==" "}
+            if command.first! == "U" {
+                for _ in 0..<Int(command.last!)! {
+                    k = prev[k]
+                }
+            } else if command.first! == "D" {
+                for _ in 0..<Int(command.last!)! {
+                    k = next[k]
+                }
+
+            } else if command.first! == "C" {
+                deleted.append(k)
+                next[prev[k]] = next[k]
+                prev[next[k]] = prev[k]
+
+                if next[k] == n+1 {
+                    k = prev[k]
+                } else {
+                    k = next[k]
+                }
+
+            } else {
+                let restored = deleted.removeLast()
+                next[prev[restored]] = restored
+                prev[next[restored]] = restored
+            }
+        }
+
+        for i in deleted {
+            res[i-1] = "X"
+        }
+        return res.joined()
+}
+
+print("\n\n- solution 2")
+print(solution2(8, 2, ["D 2","C","U 3","C","D 4","C","U 2","Z","Z"])) // "OOOOXOOO"
+print(solution2(8, 2, ["D 2","C","U 3","C","D 4","C","U 2","Z","Z","U 1","C"])) // "OOXOXOOO
