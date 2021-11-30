@@ -90,6 +90,14 @@
  효율성 테스트 : 언어별로 작성된 정답 코드의 실행 시간의 적정 배수
  */
 
+/**
+ - 나의 생각
+ Linked list를 활용하여 문제를 풀어야 함.
+ 
+ Linked list에 대한 이해가 충분히 이루어져야 한다.
+ Linked list를 사용하지 않아도 가능할 수 있지만 효율적인 측면에서 볼 때 사용하는게 좋아보인다,
+ */
+
 import Foundation
 
 // "U X": 현재 선택된 행에서 X칸 위에 있는 행을 선택합니다.
@@ -177,6 +185,10 @@ func solution2(_ n:Int, _ k:Int, _ cmd:[String]) -> String {
     var next: [Int] = []
     var k = k + 1
     
+    // 양방향 연결 리스트를 구현하고 사용한다. (node)
+    // 0의 prev = -1, next = 1
+    // 1의 prev = 0, next = 2
+    // 2의 prev = 1, next = 3
     for i in 0..<n + 2 {
         prev.append(i - 1)
         next.append(i + 1)
@@ -187,31 +199,34 @@ func solution2(_ n:Int, _ k:Int, _ cmd:[String]) -> String {
         
         if command.first! == "U" {
             for _ in 0..<Int(command.last!)! {
-                k = prev[k]
+                k = prev[k] // 해당 수만큼 prev를 이동한다.
             }
         } else if command.first! == "D" {
             for _ in 0..<Int(command.last!)! {
-                k = next[k]
+                k = next[k] // 해당 수만큼 next를 이동한다.
             }
             
         } else if command.first! == "C" {
-            deleted.append(k)
+            deleted.append(k) // 현재 선택된 행을 delete배열에 추가한다.
+            // 제거 후 next와 prev를 업데이트 한다.
             next[prev[k]] = next[k]
             prev[next[k]] = prev[k]
             
-            if next[k] == n + 1 {
+            if next[k] == n + 1 { // 초과되는 값에 대한 예외처리
                 k = prev[k]
             } else {
                 k = next[k]
             }
             
-        } else {
-            let restored = deleted.removeLast()
+        } else { // 되돌리기
+            let restored = deleted.removeLast() // delete된 마지막 항목을 제거
+            // 제거 후 변경했던 node를 되돌린다.
             next[prev[restored]] = restored
             prev[next[restored]] = restored
         }
     }
     
+    // 제거된 행에 대한 부분만 X로 변경한다.
     for i in deleted {
         res[i - 1] = "X"
     }
