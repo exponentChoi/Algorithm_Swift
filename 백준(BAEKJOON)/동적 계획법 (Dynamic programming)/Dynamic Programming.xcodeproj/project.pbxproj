@@ -36,6 +36,7 @@
 		7CCD74B426F8D861004713FE /* 피보나치 수 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD74B326F8D861004713FE /* 피보나치 수 2.swift */; };
 		7CCD74B626FB5008004713FE /* RGB거리 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD74B526FB5008004713FE /* RGB거리 2.swift */; };
 		7CDCA835273B5FB90081FD45 /* 상자넣기.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDCA834273B5FB90081FD45 /* 상자넣기.swift */; };
+		7CF884B1275886770008319D /* 다리 놓기.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF884B0275886770008319D /* 다리 놓기.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -83,6 +84,8 @@
 		7CCD74B326F8D861004713FE /* 피보나치 수 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "피보나치 수 2.swift"; sourceTree = "<group>"; };
 		7CCD74B526FB5008004713FE /* RGB거리 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RGB거리 2.swift"; sourceTree = "<group>"; };
 		7CDCA834273B5FB90081FD45 /* 상자넣기.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "상자넣기.swift"; sourceTree = "<group>"; };
+		7CF884B0275886770008319D /* 다리 놓기.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "다리 놓기.swift"; sourceTree = "<group>"; };
+		7CF884B327588E260008319D /* pic1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pic1.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +118,7 @@
 		7C4BA07C26F36A110044E1A2 /* Dynamic Programming */ = {
 			isa = PBXGroup;
 			children = (
+				7CF884B227588DF80008319D /* 다리 놓기 */,
 				7C4BA07D26F36A110044E1A2 /* main.swift */,
 				7CCD74AE26F70B1A004713FE /* 계단 오르기 */,
 				7C4BA09726F36AA80044E1A2 /* 1로 만들기.swift */,
@@ -157,6 +161,16 @@
 			);
 			name = "계단 오르기";
 			path = "계단 오르기";
+			sourceTree = "<group>";
+		};
+		7CF884B227588DF80008319D /* 다리 놓기 */ = {
+			isa = PBXGroup;
+			children = (
+				7CF884B327588E260008319D /* pic1.png */,
+				7CF884B0275886770008319D /* 다리 놓기.swift */,
+			);
+			name = "다리 놓기";
+			path = "다리 놓기";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -225,6 +239,7 @@
 				7C07491E272EC05C0077BA3E /* 가장 긴 감소하는 부분 수열.swift in Sources */,
 				7C07491C272D771A0077BA3E /* 정수 삼각형.swift in Sources */,
 				7CCD74B626FB5008004713FE /* RGB거리 2.swift in Sources */,
+				7CF884B1275886770008319D /* 다리 놓기.swift in Sources */,
 				7CB2892A2737B648002DB8B3 /* 쉬운 계단 수.swift in Sources */,
 				7CCD74AD26F70A90004713FE /* 계단 오르기.swift in Sources */,
 				7CCD74AB26F615A0004713FE /* RGB거리.swift in Sources */,
