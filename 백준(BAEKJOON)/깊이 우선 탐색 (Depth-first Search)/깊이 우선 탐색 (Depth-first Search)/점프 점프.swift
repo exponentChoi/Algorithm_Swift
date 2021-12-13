@@ -43,13 +43,14 @@ func 점프점프() {
         var copy = jumps
         copy.remove(at: i)
         visits = visits.union(dfs(start: start - 1, jump: jumps[i], jumps: copy, bridge: bridge, visits: []))
+        visits = visits.union(dfs(start: start - 1, jump: -jumps[i], jumps: copy, bridge: bridge, visits: []))
     }
     
-    let filter = visits.filter { $0 > 0 && $0 <= bridge }
-    print(filter.count)
+    print(visits)
 }
 
 func dfs(start: Int, jump: Int, jumps: [Int], bridge: Int, visits: Set<Int>) -> Set<Int> {
+    if start < 1 || start > bridge { return visits}
     if jumps.isEmpty { return Set([start]) }
     
     var visit = visits
@@ -61,12 +62,10 @@ func dfs(start: Int, jump: Int, jumps: [Int], bridge: Int, visits: Set<Int>) -> 
         
         if start + jump <= bridge {
             visit = visit.union(dfs(start: start + jump, jump: jumps[i], jumps: copy, bridge: bridge, visits: visit))
-            visit = visit.union(dfs(start: start + jump, jump: -jumps[i], jumps: copy, bridge: bridge, visits: visit))
         }
         
-        if start - jump >= bridge {
+        if start - jump > 0 {
             visit = visit.union(dfs(start: start - jump, jump: jumps[i], jumps: copy, bridge: bridge, visits: visit))
-            visit = visit.union(dfs(start: start - jump, jump: -jumps[i], jumps: copy, bridge: bridge, visits: visit))
         }
     }
     
