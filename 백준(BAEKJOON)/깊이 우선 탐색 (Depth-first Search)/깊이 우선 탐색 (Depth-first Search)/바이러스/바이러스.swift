@@ -36,33 +36,36 @@ import Foundation
 
 /// 바이러스 [2606번]
 func 바이러스() {
-    let computer = Int(readLine()!)!
-    let connect = Int(readLine()!)!
-    let connected = (0..<connect).map { _ in readLine()!.split(separator: " ").compactMap { Int($0) }}
-
-    var infecteds: Set<Int> = [1]
-
-    func dfs(left: Int, right: Int) {
-        infecteds.insert(right)
-        connected.forEach { paired in
-            let l = paired[0]
-            let r = paired[1]
-            
-            if l == right {
-                dfs(left: l, right: r)
+    let computer = Int(readLine()!)! // 컴퓨터의 수
+    let network = Int(readLine()!)! // 컴퓨터 쌍의 수
+    var connected = [Int: [Int]]() // 각 컴퓨터의 번호와 연결된 목록
+    for i in 1...computer {
+        connected[i] = []
+    }
+    
+    for _ in 0..<network {
+        let paired = readLine()!.split(separator: " ").compactMap { Int($0) } // 쌍으로 연결된 항목
+        connected[paired[0]]?.append(paired[1]) // 각 번호에 연결목록 추가
+        connected[paired[1]]?.append(paired[0]) // 각 번호에 연결목록 추가
+    }
+    
+    var infecteds: Set<Int> = [1] // 감염된 컴퓨터 저장(중복 x)
+    
+    func dfs(_ key: Int) {
+        if let paired = connected[key] { // 쌍으로 연결된 항목이 있는 경우에만
+            for i in 0..<paired.count {
+                let infect = paired[i] // 해당 번호와 연결되어 있다면 감염이다.
+                if !infecteds.contains(infect) { // 감염 목록에 있다면 pass
+                    infecteds.insert(infect) // 감염 목록에 추가한다.
+                    dfs(infect) // 감염된 컴퓨터와 연결된 컴퓨터를 찾으러 간다.
+                }
             }
         }
     }
     
-    connected.forEach { paired in
-        let left = paired[0] // left
-        let right = paired[1] // right
-        
-        if left == 1 {
-            dfs(left: left, right: right)
-        }
-    }
+    dfs(1) // 1번 컴퓨터가 감염되었으므로 1번으로 시작한다.
     
-    print(infecteds.count - 1)
+    print(infecteds.count - 1) // 1번이 숙주이고, 1번이 감염시킨 개수는 1번을 뺀 개수를 출력한다.
 }
+
 
