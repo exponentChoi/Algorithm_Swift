@@ -11,6 +11,7 @@
 		7CD8D63627647F84007825AA /* 숫자판 점프.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD8D63527647F84007825AA /* 숫자판 점프.swift */; };
 		7CD8D6382767172D007825AA /* 점프 점프.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CD8D6372767172D007825AA /* 점프 점프.swift */; };
 		7CEE90AC27697852007F1379 /* 바이러스.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEE90AB27697852007F1379 /* 바이러스.swift */; };
+		7CEE90B127698B24007F1379 /* 단지번호붙이기.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEE90B027698B24007F1379 /* 단지번호붙이기.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,6 +33,8 @@
 		7CD8D6372767172D007825AA /* 점프 점프.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "점프 점프.swift"; sourceTree = "<group>"; };
 		7CEE90AB27697852007F1379 /* 바이러스.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "바이러스.swift"; sourceTree = "<group>"; };
 		7CEE90AE276978AC007F1379 /* 그림 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "그림 1.png"; sourceTree = "<group>"; };
+		7CEE90B027698B24007F1379 /* 단지번호붙이기.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "단지번호붙이기.swift"; sourceTree = "<group>"; };
+		7CEE90B327698B51007F1379 /* 그림.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "그림.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +71,7 @@
 				7CD8D63527647F84007825AA /* 숫자판 점프.swift */,
 				7CD8D6372767172D007825AA /* 점프 점프.swift */,
 				7CEE90AD2769787D007F1379 /* 바이러스 */,
+				7CEE90AF27698B1A007F1379 /* 단지번호붙이기 */,
 			);
 			path = "깊이 우선 탐색 (Depth-first Search)";
 			sourceTree = "<group>";
@@ -80,6 +84,16 @@
 			);
 			name = "바이러스";
 			path = "바이러스";
+			sourceTree = "<group>";
+		};
+		7CEE90AF27698B1A007F1379 /* 단지번호붙이기 */ = {
+			isa = PBXGroup;
+			children = (
+				7CEE90B327698B51007F1379 /* 그림.png */,
+				7CEE90B027698B24007F1379 /* 단지번호붙이기.swift */,
+			);
+			name = "단지번호붙이기";
+			path = "단지번호붙이기";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,6 +155,7 @@
 			files = (
 				7CD8D6382767172D007825AA /* 점프 점프.swift in Sources */,
 				7CD8D63627647F84007825AA /* 숫자판 점프.swift in Sources */,
+				7CEE90B127698B24007F1379 /* 단지번호붙이기.swift in Sources */,
 				7CD8D62F27647F54007825AA /* main.swift in Sources */,
 				7CEE90AC27697852007F1379 /* 바이러스.swift in Sources */,
 			);
