@@ -33,34 +33,57 @@
 3
  
  */
+
+/**
+ DP + DFS 문제이다......
+ 방문했던 곳을 똑같은 방법으로 길을 찾는것은 매우 비효율적인 방법이다.
+ */
 import Foundation
 
 /// 내리막길 [1520번]
 func 내리막길() {
     let size = readLine()!.split(separator: " ").compactMap { Int($0) }
     let directions = [(0, 1), (1, 0), (0, -1), (-1, 0)] // 이동할 방향 (남, 동, 북, 서)
-    let matrix = (0..<size[0]).map { _ in readLine()!.split(separator: " ").compactMap { Int($0) }}
-    var solution = 0
     
-    func dfs(_ x: Int, _ y: Int) {
+    var dp = Array(repeating: Array(repeating: 0, count: size[1]), count: size[0]) // DP용 맵 생성
+    let matrix = (0..<size[0]).map { _ in readLine()!.split(separator: " ").compactMap { Int($0) }} // 입력받은 이차원배열
+    
+    func dfs(_ x: Int, _ y: Int) -> Int {
         if x == size[0] - 1 && y == size[1] - 1 {
-            solution += 1
-            return
+            return 1
         }
         
+        // 네 방향으로 반복문 실행
         for direction in directions {
             let nx = direction.0 + x
             let ny = direction.1 + y
             
+            // 범위를 벗어난 경우 continue
             if size[0] <= nx || nx < 0 || size[1] <= ny || ny < 0 { continue }
 
+            // 다음 방향에 이동한 숫자가 현재보다 낮은 경우에만 진행 (내리막 길)
             if matrix[x][y] > matrix[nx][ny] {
-                dfs(nx, ny)
+                
+                
+                if dp[nx][ny] == 0 { // dp가 처음인 경우
+                    dp[x][y] += dfs(nx, ny) // dfs로 뽑을 수 있는 경우의 수를 더하여 DP에 저장한다.
+                    
+                } else if dp[nx][ny] > 0 { // dp가 처음이 아닌 경우
+                    // 다음 방향의 좌표에 저장된 경우의 수를 현재 좌표에 더한다.
+                    dp[x][y] += dp[nx][ny]
+                }
             }
+        }
+        
+        if dp[x][y] == 0 { // 현재 위치에 저장된 값이 0인 경우
+            dp[x][y] = -1 // 현재 위치에 해당하는 DP에 -1을 저장한다.
+            return 0 // 저장된 값이 없으므로 0을 반환.
+        } else {
+            return dp[x][y] // dp에 저장된 경우의 수를 반환.
         }
     }
     
-    dfs(0, 0)
+    let solution = dfs(0, 0) // dfs 시작!
     
-    print(solution)
+    print(solution == -1 ? 0 : solution) // 최종값 저장.
 }
