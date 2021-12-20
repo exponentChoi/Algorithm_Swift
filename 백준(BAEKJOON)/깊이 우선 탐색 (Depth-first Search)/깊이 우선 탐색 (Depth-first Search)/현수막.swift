@@ -51,26 +51,28 @@ func 현수막() {
         return readLine()!.split(separator: " ").compactMap { Int($0) }
     }
     
-    var word = Set<String>() // 각 글자의 시작점들을 저장한다.
+    var answer = 0
     
-    func dfs(_ x: Int, y: Int, tag: String) {
+    func dfs(_ x: Int, _ y: Int) {
         if 0 > x || x >= size[0] || 0 > y || y >= size[1] || banner[x][y] == 0 { return }
         banner[x][y] = 0
-        word.insert(tag)
         
         for direction in directions {
             let nx = x + direction.0
             let ny = y + direction.1
             
-            dfs(nx, y: ny, tag: tag)
+            dfs(nx, ny)
         }
     }
     
     for i in 0..<banner.count {
         for j in 0..<banner[i].count {
-            dfs(i, y: j, tag: "\(i), \(j)")
+            if banner[i][j] == 1 { // 1인 경우에만 검사한다.
+                answer += 1 // 출발점에만 더해주면 그 뒤로는 겹칠일이 없다.
+                dfs(i, j)
+            }
         }
     }
 
-    print(word.count)
+    print(answer)
 }
