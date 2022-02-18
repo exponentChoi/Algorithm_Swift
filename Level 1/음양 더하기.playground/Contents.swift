@@ -29,9 +29,11 @@
 import Foundation
 
 func solution(_ absolutes:[Int], _ signs:[Bool]) -> Int {
-    
-    return (0..<absolutes.count).map { signs[$0] ? absolutes[$0] : -absolutes[$0] }.reduce(0, +)
+    return zip(absolutes, signs)
+        .map { $1 ? $0 : -$0 }
+        .reduce(0, +)
 }
 
 
-print(solution([4,7,12],  [true,false,true]))
+print(solution([4,7,12],  [true,false,true])) // 9
+print(solution([1,2,3], [false,false,true]))  // 0
