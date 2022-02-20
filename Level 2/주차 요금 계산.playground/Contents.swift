@@ -142,10 +142,14 @@ struct Car: Hashable {
         case out = "OUT"
     }
     
-    var state: Parking
-    var lastTime: Int
-    var number: String
-    var totalTime: Int = 0
+    /// 출차 상태
+    private(set) var state: Parking
+    /// 최근 시간
+    private(set) var lastTime: Int
+    /// 차량 번호
+    private(set) var number: String
+    /// 총 사용 시간
+    private(set) var totalTime: Int = 0
     
     init(record: String) {
         let components = record.components(separatedBy: .whitespaces)
@@ -164,7 +168,7 @@ struct Car: Hashable {
         switch newState {
         case .in: break
         case .out:
-            totalTime += currentTime - lastTime
+            totalTime += currentTime - lastTime // out 할 때 total time 증가
         }
         
         self.state = newState
@@ -177,7 +181,7 @@ struct Car: Hashable {
         
         switch self.state {
         case .in:
-            finalTime += "23:59".time - lastTime
+            finalTime += "23:59".time - lastTime // out 기록이 없는 경우 '23:59'에 출차로 반영
         case .out:
             break
         }
@@ -197,6 +201,7 @@ struct Car: Hashable {
         }
     }
     
+    // number로 비교하기
     static func == (lhs: Car, rhs: Car) -> Bool {
         return lhs.number == rhs.number
     }
@@ -211,21 +216,23 @@ extension String {
 }
 
 func solution(_ fees:[Int], _ records:[String]) -> [Int] {
-    let fee = Fee(fees)
-    var history = [Car]()
+    let fee = Fee(fees) // 요금표
+    var history = [Car]() // 각 차의 기록을 저장
     
+    // 기록만큼 반복
     records.forEach {
         let car = Car(record: $0)
         
-        if let index = history.firstIndex(of: car) {
-            history[index].update(record: $0)
+        if let index = history.firstIndex(of: car) { // 기록에 해당 차가 있는 경우
+            history[index].update(record: $0) // 차의 내용 업데이트
         } else {
-            history.append(car)
+            history.append(car) // 새로운 내용 추가
         }
     }
     
-    return history.sorted(by: { $0.number < $1.number })
-        .map { $0.finalSettlement(fee: fee) }
+    return history
+        .sorted(by: { $0.number < $1.number }) // 차번호가 낮은 순으로 정렬
+        .map { $0.finalSettlement(fee: fee) } // 최종금액을 정산하여 반환
 }
 
 print(solution([180, 5000, 10, 600], ["05:34 5961 IN", "06:00 0000 IN", "06:34 0000 OUT", "07:59 5961 OUT", "07:59 0148 IN", "18:59 0000 IN", "19:09 0148 OUT", "22:59 5961 IN", "23:00 5961 OUT"])) // [14600, 34400, 5000]
